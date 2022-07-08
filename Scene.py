@@ -19,6 +19,12 @@ class Scene:
         self._space=pymunk.Space()
         self._space.gravity =g
 
+    def get_obj_list(self):
+        return self._objects
+
+    def get_physic_list(self):
+        return self._physic_objects
+
     def add_object(self,obj):
         if isinstance(obj,PhyObject):
             self._space.add(obj.getBody(),obj.getFigure())
