@@ -1,8 +1,8 @@
 from .object import Object
 
 class ViObject(Object):
-    def __init__(self,name,id,shape):
-        super().__init__(name,id)
+    def __init__(self,name,id,scene,shape):
+        super().__init__(name,id,scene)
         self._shape = shape
 
     def setPosition(self,pos):

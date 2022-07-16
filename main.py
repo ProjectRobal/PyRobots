@@ -4,33 +4,31 @@ import pyglet
 from Scene import Scene
 from ActionScripts import ActionScripts
 from solids.square import Square
-from solids.terrain import Terrain
+from sensors.frictionsensor import FrictionSensor
+from sensors.gyrosensor import Gyro
+from sensors.distancesensor import DistanceSensor
 
 scene=Scene((0,0))
 
 window = pyglet.window.Window()
 
-sqr=Square("sqr1",1,10,(255,0,0),(40,40))
-sqr1=Square("sqr2",2,10,(255,255,0),(10,10))
+sqr=Square("sqr1",1,scene,10,(255,0,0),(40,40))
+sqr1=Square("sqr2",2,scene,10,(255,255,0),(10,10))
 
 sqr.setPosition((200,100))
 sqr1.setPosition((200,300))
-sqr.getFigure().friction=1
-sqr1.getFigure().friction=1
-sqr.getFigure().elasticity=1
-sqr1.getFigure().elasticity=1
 
-terr1=Terrain("terr1",3,0,0,500,500,1,(0,255,0))
 
-scene.add_object(terr1)
+fric=FrictionSensor("fric",1,scene,sqr,0.5)
+gyro=Gyro("gyro",2,scene,sqr)
+
+#sensor=DistanceSensor("distance",3,sqr,scene,(0,0,),(0,1,),30,0.5)
+
 scene.add_object(sqr1)
 scene.add_object(sqr)
 
-scene.add_begin(terr1,sqr,terr1.onBegin)
-scene.add_begin(terr1,sqr1,lambda x,y,z : False)
-
-scene.add_pre_solve(terr1,sqr,terr1.onPreSolve)
-
+scene.add_sensor(fric)
+scene.add_sensor(gyro)
 
 apply_force=False
 

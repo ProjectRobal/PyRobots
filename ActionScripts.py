@@ -1,5 +1,6 @@
 '''A class to handle user inputs or others scripts that are going to run in the background'''
 import threading
+from base.eventobject import EventObject
 
 
 class ActionScripts:
@@ -17,6 +18,19 @@ class ActionScripts:
         self._mouse_motion=None
         self._mouse_release=None
         self._mouse_press=None
+        self._event_objects=[]
+
+    def add_event_object(self,obj):
+        if isinstance(obj,EventObject):
+            self._event_objects.append(obj)
+
+    def remove_event_object(self,obj):
+        if type(obj) is str:
+            obj=next((x for x in self._event_objects if x.name()==obj),None)
+            
+        if isinstance(obj,EventObject):
+            self._event_objects.remove(obj)
+
 
     def alter_main_loop(self,loop):
         self._run=False
@@ -46,26 +60,44 @@ class ActionScripts:
     def run_press_key(self,symbol,modifiers):
         if self._press is not None:
             self._press(self._scene,symbol,modifiers)
+
+        for e in self._event_objects:
+            e.run_press_key(symbol, modifiers)
     
     def run_release_key(self,symbol,modifiers):
         if self._release is not None:
             self._release(self._scene,symbol,modifiers)
+        
+        for e in self._event_objects:
+            e.run_release_key(symbol, modifiers)
 
     def run_mouse_move(self,x,y,dx,dy):
         if self._mouse_motion is not None:
             self._mouse_motion(self._scene,x,y,dx,dy)
+        
+        for e in self._event_objects:
+            e.run_mouse_move(x,y,dx,dy)
     
     def run_mouse_press(self,x,y,button,modifiers):
         if self._mouse_press is not None:
             self._mouse_press(self._scene,x,y,button,modifiers)
 
+        for e in self._event_objects:
+            e.run_mouse_press(x,y,button, modifiers)
+
     def run_mouse_release(self,x,y,button,modifiers):
         if self._mouse_release is not None:
             self._mouse_release(self._scene,x,y,button,modifiers)
 
+        for e in self._event_objects:
+            e.run_mouse_release(x,y,button, modifiers)
+
     def run_mouse_drag(self,x,y,dx,dy,button,modifiers):
         if self._mouse_drag is not None:
             self._mouse_drag(self._scene,x,y,dx,dy,y,button,modifiers)
+
+        for e in self._event_objects:
+            e.run_mouse_drag(x,y,dx,dy,button, modifiers)
         
     def start(self):
         self._run=True

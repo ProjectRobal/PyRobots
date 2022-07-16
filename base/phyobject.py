@@ -7,8 +7,8 @@ class PhyObject(ViObject):
      body - pymug physic body
      fig - a shape representation of the body in pymug
      '''
-    def __init__(self,name,id,shape,body,fig):
-        super().__init__(name,id,shape)
+    def __init__(self,name,id,scene,shape,body,fig):
+        super().__init__(name,id,scene,shape)
         self._body = body
         self._fig = fig
 
