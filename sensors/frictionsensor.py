@@ -5,16 +5,16 @@ from pymunk import Vec2d
 
 class FrictionSensor(Sensor):
     '''u a friction ratio'''
-    def __init__(self,name,id,scene,obj,u):
-        super().__init__(name,id,scene,obj)
+    def __init__(self,name,space,obj,u):
+        super().__init__(name,space,obj)
         self._fric_u=u
 
-    def pre_solve(self,scene,dt):
+    def pre_solve(self,dt):
         pass
 
-    def post_solve(self,scene,dt):
-        mass=self._obj.getBody().mass
-        velocity=self._obj.getBody().velocity
+    def post_solve(self,dt):
+        mass=self._obj.Body().mass
+        velocity=self._obj.Body().velocity
         # we are going to act against velocity
         velocity=-velocity
         vel_mod=abs(velocity)
@@ -30,6 +30,6 @@ class FrictionSensor(Sensor):
 
         if v_after > 0:
 
-            self._obj.getBody().apply_force_at_local_point(direction*force*mass,(0,0))
+            self._obj.Body().apply_force_at_local_point(direction*force*mass,(0,0))
         else:
-            self._obj.getBody().velocity=(0,0)
+            self._obj.Body().velocity=(0,0)

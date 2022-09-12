@@ -2,26 +2,22 @@
 after pymunk update ( function pre_solve and post_solve )'''
 
 class Sensor:
-    def __init__(self,name,id,scene,obj):
-        self._name=name
-        self._id = id
+    def __init__(self,name,space,obj):
         self._obj = obj
-        self._scene= scene
+        self._name = name
+        self._space= space
 
-    def getScene(self):
-        return self._scene
-
-    def getName(self):
+    def Name(self):
         return self._name
-    
-    def getId(self):
-        return self._id
+
+    def getSpace(self):
+        return self._space
 
     def getObject(self):
         return self._obj
 
-    def pre_solve(self,scene,dt):
+    def pre_solve(self,dt):
         raise NotImplementedError()
 
-    def post_solve(self,scene,dt):
+    def post_solve(self,dt):
         raise NotImplementedError()
