@@ -21,3 +21,6 @@ class Sensor:
 
     def post_solve(self,dt):
         raise NotImplementedError()
+
+    def __del__(self):
+        self._space.scene().remove(self.Body(),self.Shape()) 
