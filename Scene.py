@@ -51,11 +51,6 @@ class Scene:
         for obj in self._objects.values():
             if isinstance(obj,EventObject):
                 obj.run_mouse_drag(x,y,dx,dy,buttons,modifiers)
-
-    def on_draw(self):
-        pyglet.gl.glClearColor(255, 255, 255, 255)
-        self._window.clear()
-        self._space.debug_draw(self._options)
     
 
     def init_events(self):
@@ -82,6 +77,11 @@ class Scene:
         pyglet.gl.glClearColor(255, 255, 255, 255)
         self._window.clear()
         self._space.debug_draw(self._options)
+
+        for sensor in self._sensors.values():
+            if sensor.Show():
+                sensor.visualize(self._window)
+
         # draw the HUD 
         for hud in self._hud.values():
             hud.draw(self._window)

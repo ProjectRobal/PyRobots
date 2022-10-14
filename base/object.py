@@ -16,11 +16,14 @@ class Object:
         return self._space
 
     def Body(self):
-        raise NotImplementedError()
+        return None
 
     def Shape(self):
-        raise NotImplementedError()
+        return None
 
     def __del__(self):
-        self.Scene().space().remove(self.Body(),self.Shape()) 
+        if self.Shape() is not None:
+            self.Scene().space().remove(self.Shape()) 
+        if self.Body() is not None:
+            self.Scene().space().remove(self.Body()) 
     

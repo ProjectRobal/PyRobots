@@ -2,6 +2,10 @@
 from base.sensor import Sensor
 from pymunk.vec2d import Vec2d
 import pymunk
+import math
+
+import pyglet
+from pyglet import shapes
 
 
 class Laser(Sensor):
@@ -13,6 +17,14 @@ class Laser(Sensor):
         self._direction = Vec2d(direction[0],direction[1])
         self._radius = radius
         self._mesaurment=0
+        self.start=Vec2d(0,0)
+        self.end=Vec2d(0,0)
+
+    def visualize(self,window):
+        bath=pyglet.graphics.Batch()
+        line=shapes.Line(self.start[0],self.start[1],self.end[0],self.end[1],color=(255,0,0),batch=bath)
+
+        bath.draw()
 
     def getDistance(self):
         return self._mesaurment
@@ -24,19 +36,24 @@ class Laser(Sensor):
         rotation=self._obj.Body().angle
 
         #transform sensor position
-        start=self._obj.Body().position+self._pos
 
-        start=start.rotated(rotation)
+        self.start=self._pos
+
+        self.start=self.start.rotated(rotation)
+
+        self.start=self._obj.Body().position+self.start
 
         dir=self._direction.rotated(rotation)
 
-        end=(start+dir*self._distance)
+        self.end=(self.start+dir*self._distance)
 
-        info=self.getSpace().space().segment_query(start,end,self._radius,pymunk.ShapeFilter())
+        info=self.getSpace().space().segment_query(self.start,self.end,self._radius,pymunk.ShapeFilter())
 
         for i in info:
             if i.shape is not None:
                 self._mesaurment=i.alpha*self._distance
+                self.end=i.point
+                break
             else:
                 self._mesaurment=8160
 

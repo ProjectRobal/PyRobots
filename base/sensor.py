@@ -6,6 +6,13 @@ class Sensor:
         self._obj = obj
         self._name = name
         self._space= space
+        self._show=False
+
+    def Show(self,s=None):
+        if s is None:
+            return self._show
+
+        self._show = s
 
     def Name(self):
         return self._name
@@ -22,5 +29,5 @@ class Sensor:
     def post_solve(self,dt):
         raise NotImplementedError()
 
-    def __del__(self):
-        self._space.scene().remove(self.Body(),self.Shape()) 
+    def visualize(self,window):
+        pass
