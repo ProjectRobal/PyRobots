@@ -6,7 +6,7 @@ class Object:
         self._space=space
         self._name=name
 
-    def Loop(self):
+    def Loop(self,dt):
         pass
 
     def Name(self):

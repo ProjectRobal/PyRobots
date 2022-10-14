@@ -4,22 +4,15 @@ from pymunk.vec2d import Vec2d
 import pymunk
 
 
-class DistanceSensor(Sensor):
+class Laser(Sensor):
     '''pos - position of the sensor relative to the body, direction a wersor that point the direction of where the sensor is pointing, distance max sensor distance, radius of the sensor''' 
-    def __init__(self,space,obj,pos,direction,distance,radius):
-        super().__init__(space,obj)
+    def __init__(self,name,space,obj,pos,direction,distance,radius):
+        super().__init__(name,space,obj)
         self._distance = distance
         self._pos = Vec2d(pos[0],pos[1])
         self._direction = Vec2d(direction[0],direction[1])
         self._radius = radius
         self._mesaurment=0
-        body=pymunk.Body(0,0)
-        self._point=pymunk.Circle(body,0)
-        self._point.position=self._pos+obj.getBody().position
-        self._point.sensor=True
-        self._joints=pymunk.constraints.PinJoint(obj.getBody(),self._point.body,self._pos)
-        space.add(body,self._point)
-        space.add(self._joints)
 
     def getDistance(self):
         return self._mesaurment
@@ -28,15 +21,18 @@ class DistanceSensor(Sensor):
         pass
 
     def post_solve(self,dt):
-        start=self._obj.getBody().position+self._pos
+        rotation=self._obj.Body().angle
 
-        start=start.rotated(self._obj.getBody().angle)
+        #transform sensor position
+        start=self._obj.Body().position+self._pos
 
-        dir=self._direction.rotated(self._obj.getBody().angle)
+        start=start.rotated(rotation)
+
+        dir=self._direction.rotated(rotation)
 
         end=(start+dir*self._distance)
 
-        info=self.getScene().Space().segment_query(start,end,self._radius,pymunk.ShapeFilter())
+        info=self.getSpace().space().segment_query(start,end,self._radius,pymunk.ShapeFilter())
 
         for i in info:
             if i.shape is not None:

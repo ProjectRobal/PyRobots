@@ -68,9 +68,9 @@ class Scene:
         window.on_mouse_drag=self.on_mouse_drag
         window.on_draw=self.on_draw
 
-    def main_loop(self):
+    def main_loop(self,dt):
         for obj in self._objects.values():
-            obj.Loop()
+            obj.Loop(dt)
     
     def space(self):
         return self._space
@@ -88,7 +88,7 @@ class Scene:
 
     def update(self,dt):
         
-        self.main_loop()
+        self.main_loop(dt)
 
         for sensor in self._sensors.values():
             sensor.pre_solve(dt)
