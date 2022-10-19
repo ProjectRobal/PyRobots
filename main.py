@@ -15,17 +15,19 @@ from base.robot import Robot
 from Scene import Scene
 
 from shapes.rect import Rect
+from shapes.rect import MakeRect
+
+from static.static import Static
 
 
 scene=Scene()
 
 rob=Robot(scene)
 
-obstacle=Rect("obstacle",scene,(40,40))
+obstacle=Static("obstacle",scene,MakeRect,((40,40),(300,200)))
 
 
 rob.setPosition((200,200))
 
-obstacle.Body().position=(300,200)
 
 scene.run()
