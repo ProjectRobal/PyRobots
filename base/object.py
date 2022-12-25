@@ -21,6 +21,9 @@ class Object:
     def Shape(self):
         return None
 
+    def draw(self,window):
+        pass
+
     def __del__(self):
         if self.Shape() is not None:
             self.Scene().space().remove(self.Shape()) 

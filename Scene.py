@@ -76,7 +76,9 @@ class Scene:
     def on_draw(self):
         pyglet.gl.glClearColor(255, 255, 255, 255)
         self._window.clear()
-        self._space.debug_draw(self._options)
+
+        for obj in self._objects.values():
+            obj.draw(self._window)
 
         for sensor in self._sensors.values():
             if sensor.Show():
