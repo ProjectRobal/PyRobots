@@ -16,5 +16,5 @@ class HUD:
         return copy(self._value)
 
     '''How to display the value'''
-    def draw(self,window):
+    def draw(self,batch):
         raise NotImplementedError()

@@ -74,19 +74,22 @@ class Scene:
         pyglet.app.run()
 
     def on_draw(self):
+        batch=pyglet.graphics.Batch()
         pyglet.gl.glClearColor(255, 255, 255, 255)
         self._window.clear()
 
         for obj in self._objects.values():
-            obj.draw(self._window)
+            obj.draw(batch)
 
         for sensor in self._sensors.values():
             if sensor.Show():
-                sensor.visualize(self._window)
+                sensor.visualize(batch)
 
         # draw the HUD 
         for hud in self._hud.values():
-            hud.draw(self._window)
+            hud.draw(batch)
+
+        batch.draw()
 
     def update(self,dt):
         

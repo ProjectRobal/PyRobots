@@ -29,5 +29,5 @@ class Sensor:
     def post_solve(self,dt):
         raise NotImplementedError()
 
-    def visualize(self,window):
+    def visualize(self,batch):
         pass

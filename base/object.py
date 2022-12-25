@@ -21,7 +21,7 @@ class Object:
     def Shape(self):
         return None
 
-    def draw(self,window):
+    def draw(self,batch):
         pass
 
     def __del__(self):
