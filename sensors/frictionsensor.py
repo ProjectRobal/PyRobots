@@ -5,8 +5,8 @@ from pymunk import Vec2d
 
 class FrictionSensor(Sensor):
     '''u a friction ratio'''
-    def __init__(self,name,space,obj,u):
-        super().__init__(name,space,obj)
+    def __init__(self,name,scene,obj,u):
+        super().__init__(name,scene,obj)
         self._fric_u=u
 
     def pre_solve(self,dt):

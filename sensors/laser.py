@@ -44,7 +44,7 @@ class Laser(Sensor):
 
         self.end=(self.start+dir*self._distance)
 
-        info=self.getSpace().space().segment_query(self.start,self.end,self._radius,pymunk.ShapeFilter())
+        info=self._space.segment_query(self.start,self.end,self._radius,pymunk.ShapeFilter())
 
         for i in info:
             if i.shape is not None:

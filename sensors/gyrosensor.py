@@ -5,8 +5,8 @@ from pymunk.vec2d import Vec2d
 
 class Gyro(Sensor):
     '''pos a position of the gyroscope respect to the obj ( a tuple (x,y))''' 
-    def __init__(self,name,space,obj):
-        super().__init__(name,space,obj)
+    def __init__(self,name,scene,obj):
+        super().__init__(name,scene,obj)
         self._acceleration=Vec2d(0,0)
         self._angular_velocity = Vec2d(0,0)
         self._velocity1=Vec2d(0,0)

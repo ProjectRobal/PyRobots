@@ -17,7 +17,7 @@ class Sensor:
     def Name(self):
         return self._name
 
-    def getSpace(self):
+    def Space(self):
         return self._space
 
     def getObject(self):

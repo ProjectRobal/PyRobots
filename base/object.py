@@ -12,7 +12,7 @@ class Object:
     def Name(self):
         return self._name
 
-    def Scene(self):
+    def Space(self):
         return self._space
 
     def Body(self):
@@ -26,7 +26,7 @@ class Object:
 
     def __del__(self):
         if self.Shape() is not None:
-            self.Scene().space().remove(self.Shape()) 
+            self._space.remove(self.Shape()) 
         if self.Body() is not None:
-            self.Scene().space().remove(self.Body()) 
+            self._space.remove(self.Body()) 
     
