@@ -3,6 +3,8 @@ from base.object import Object
 import pymunk
 from pyglet import shapes
 
+import utils
+
 class FrictionZone(Object):
     '''
     An area object when proper object interact with it , it 
@@ -23,6 +25,8 @@ class FrictionZone(Object):
         self._color=(0,0,0)
         self._friction=friction
 
+        self.anchor=utils.get_anchor(self._shape)
+
         space.add(self._body,self._shape)
 
     def Color(self,color=None):
@@ -32,7 +36,10 @@ class FrictionZone(Object):
         self._color=color
 
     def draw(self,batch):
-        poly=shapes.Polygon(self._coords,self._color,batch=batch)
+        self.poly=shapes.Polygon(self._coords,self._color,batch=batch)
+
+        utils._to_pyglet_coords(self.anchor,self._shape,self.poly)
+
     
     def Body(self):
         return self._body

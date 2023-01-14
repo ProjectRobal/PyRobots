@@ -10,15 +10,12 @@ from base.hud import HUD
 
 class Scene:
     # win - a reference to the window object to draw on
-    def __init__(self,space:pymunk.Space):
-        self._window = pyglet.window.Window()
+    def __init__(self,space:pymunk.Space,width=800,height=600):
+        self._window = pyglet.window.Window(width,height)
         self._objects={}
         self._sensors={}
         self._hud={}
         self._space=space
-        self._options=pymunk.pyglet_util.DrawOptions()
-        self._space.debug_draw(self._options)
-
         self.init_events()
         
         pyglet.clock.schedule_interval(self.update,0.01)

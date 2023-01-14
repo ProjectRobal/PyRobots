@@ -26,8 +26,8 @@ scene=Scene(space)
 
 rob=Robot(scene,(0,0))
 
-obstacle=Rect("obstacle",space,(100,100),(300,200),pymunk.Body(0,0,body_type=pymunk.Body.STATIC))
-obstacle.setColor((255,0,0))
+obstacle=Rect("obstacle",space,(100,100),(300,150),pymunk.Body(10,1,body_type=pymunk.Body.DYNAMIC))
+obstacle.setColor((255,0,0,255))
 scene.add_object(obstacle)
 
 rob.setPosition((200,200))
