@@ -16,9 +16,9 @@ class Rect(Object):
     def __init__(self,name,space,size:Vec2d,pos:Vec2d,body:pymunk.Body):
         super().__init__(name,space)
         self.body=body
-        self.shape=MakeRect(size,(0,0),self.body)
-        space.add(self.body,self.shape)
-        self.body.position=pos
+        self.shape=MakeRect(size,pos,self.body)
+        if body.space is None:
+            space.add(self.body,self.shape)
         self.color=(0,0,0)
         self.anchor=utils.get_anchor(self.shape)
 

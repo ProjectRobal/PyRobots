@@ -16,8 +16,10 @@ class Robot:
         self._scene = scene
         self._base = Rect("base",scene.Space(),(50,50),(0,0),pymunk.Body(10,1))
         self._base.setColor((231, 255, 13,255))
+
         self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(0.0,50.0),5,500)
         self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(0.0,-50.0),5,500)
+
         self._front=Laser("front",scene.Space(),self._base,(26,0),(1,0),100,1)
 
         self._gyro=Gyro("gyro",scene.Space(),self._base)

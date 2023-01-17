@@ -17,7 +17,8 @@ class Scene:
         self._hud={}
         self._space=space
         self.init_events()
-        
+        self.debug=pymunk.pyglet_util.DrawOptions()
+
         pyglet.clock.schedule_interval(self.update,0.01)
 
     def on_key_press(self,symbol, modifiers):
@@ -88,6 +89,8 @@ class Scene:
             hud.draw(batch)
 
         batch.draw()
+
+        #self._space.debug_draw(self.debug)
 
     def update(self,dt):
         

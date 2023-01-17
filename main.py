@@ -17,6 +17,7 @@ import pymunk
 from Scene import Scene
 
 from shapes.rect import Rect
+from zone.friction_zone import FrictionZone
 
 space=pymunk.Space(True)
 '''use 4 threads'''
@@ -26,10 +27,16 @@ scene=Scene(space)
 
 rob=Robot(scene,(0,0))
 
-obstacle=Rect("obstacle",space,(100,100),(300,150),pymunk.Body(10,1,body_type=pymunk.Body.DYNAMIC))
+obstacle=Rect("obstacle",space,(100,100),(0,0),pymunk.Body(10,1,body_type=pymunk.Body.DYNAMIC))
 obstacle.setColor((255,0,0,255))
+
+f_zone=FrictionZone("floor",space,[(-200,-200),(200,-200),(200,200),(200,-200)],0.4,[2])
+
+scene.add_object(f_zone)
 scene.add_object(obstacle)
 
-rob.setPosition((200,200))
+obstacle.Body().position=(200,200)
+
+#rob.setPosition((200,200))
 
 scene.run()
