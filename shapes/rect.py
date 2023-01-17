@@ -22,7 +22,9 @@ class Rect(Object):
         self.color=(0,0,0)
         self.anchor=utils.get_anchor(self.shape)
 
-    def setColor(self,color):
+    def Color(self,color=None):
+        if color is None:
+            return self.color
         self.color=color
 
     def draw(self,batch):

@@ -15,7 +15,8 @@ class Robot:
     def __init__(self,scene:Scene,position=(0,0)):
         self._scene = scene
         self._base = Rect("base",scene.Space(),(50,50),(0,0),pymunk.Body(10,1))
-        self._base.setColor((231, 255, 13,255))
+        self._base.Color((231, 255, 13,255))
+        self._base.Shape().collision_type=2
 
         self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(0.0,50.0),5,500)
         self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(0.0,-50.0),5,500)
