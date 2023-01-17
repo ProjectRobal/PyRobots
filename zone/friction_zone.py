@@ -23,6 +23,7 @@ class FrictionZone(Object):
 
         self.shape=pymunk.Poly(self.body,coordinates)
         self.shape.sensor=True
+        self.shape.collision_type=id
 
         self._color=(0,0,0)
         self._friction=friction
@@ -36,20 +37,20 @@ class FrictionZone(Object):
         space.add(self.body,self.shape)
 
     def _pre_solve(self,arbiter:pymunk.Arbiter,space,data):
-        on_floor:pymunk.Shape=arbiter.shapes()[1]
+        on_floor:pymunk.Shape=arbiter.shapes[1]
         
         velocity:pymunk.Vec2d=on_floor.body.velocity
 
         if abs(velocity) <= 0:
             return
 
+        print(velocity)
+
         mass=on_floor.body.mass
 
         friction=mass*10*self._friction
 
         f_force=friction*-velocity.normalized()
-
-        print(f_force)
 
         on_floor.body.apply_force_at_local_point(f_force)
 
