@@ -19,8 +19,11 @@ class Rect(Object):
         self.shape=MakeRect(size,pos,self.body)
         if body.space is None:
             space.add(self.body,self.shape)
+        else:
+            space.add(self.shape)
         self.color=(0,0,0)
         self.anchor=utils.get_anchor(self.shape)
+        self.pos=pos
 
     def Color(self,color=None):
         if color is None:

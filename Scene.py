@@ -8,6 +8,8 @@ from base.sensor import Sensor
 from base.eventobject import EventObject
 from base.hud import HUD
 
+from config import *
+
 class Scene:
     # win - a reference to the window object to draw on
     def __init__(self,space:pymunk.Space,width=800,height=600):
@@ -19,7 +21,7 @@ class Scene:
         self.init_events()
         self.debug=pymunk.pyglet_util.DrawOptions()
 
-        pyglet.clock.schedule_interval(self.update,0.01)
+        pyglet.clock.schedule_interval(self.update,STEP_TIME)
 
     def on_key_press(self,symbol, modifiers):
         for obj in self._objects.values():
@@ -90,7 +92,7 @@ class Scene:
 
         batch.draw()
 
-        #self._space.debug_draw(self.debug)
+        self._space.debug_draw(self.debug)
 
     def update(self,dt):
         

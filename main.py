@@ -25,20 +25,20 @@ space.threads=4
 
 scene=Scene(space)
 
-obstacle=Rect("obstacle",space,(100,100),(0,0),pymunk.Body(10,1,body_type=pymunk.Body.DYNAMIC))
+obstacle=Rect("obstacle",space,(100,100),(200,200),pymunk.Body(0,0,body_type=pymunk.Body.STATIC))
 obstacle.Color((255,0,0))
 
-f_zone=FrictionZone("floor",space,[(-200,-200),(200,-200),(200,200),(-200,200)],0.4,[2])
-f_zone.Color((250, 209, 95))
+#f_zone=FrictionZone("floor",space,[(-200,-200),(200,-200),(200,200),(-200,200)],0.4,[2])
+#f_zone.Color((250, 209, 95))
 
 
-scene.add_object(f_zone)
+#scene.add_object(f_zone)
 scene.add_object(obstacle)
 
 rob=Robot(scene,(0,0))
 
 obstacle.Body().position=(200,200)
 
-#rob.setPosition((200,200))
+rob.setPosition((50,200))
 
 scene.run()

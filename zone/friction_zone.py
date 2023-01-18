@@ -5,6 +5,8 @@ from pyglet import shapes
 
 import utils
 
+from config import *
+
 class FrictionZone(Object):
     '''
     An area object when proper object interact with it , it 
@@ -42,15 +44,20 @@ class FrictionZone(Object):
         velocity:pymunk.Vec2d=on_floor.body.velocity
 
         if abs(velocity) <= 0:
-            return
+            return True
 
-        print(velocity)
+        print(abs(velocity))
 
         mass=on_floor.body.mass
 
         friction=mass*10*self._friction
 
-        f_force=friction*-velocity.normalized()
+        f_force=friction*(-velocity.normalized())
+
+        if abs(velocity)-abs(f_force*STEP_TIME)<=0:
+            on_floor.body.velocity=(0,0)
+            print("Not moving")
+            return True
 
         on_floor.body.apply_force_at_local_point(f_force)
 
