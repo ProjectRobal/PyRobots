@@ -30,7 +30,7 @@ class FrictionZone(Object):
         self._color=(0,0,0)
         self._friction=friction
 
-        self.anchor=utils.get_anchor(self.shape)
+        self.pos=utils.get_anchor(self.shape)
 
         for i in iteraction_list:
             handle=space.add_collision_handler(id,i)
@@ -72,8 +72,7 @@ class FrictionZone(Object):
 
     def draw(self,batch):
         self.poly=shapes.Polygon(*self.shape.get_vertices(),color=self._color,batch=batch)
-
-        utils._to_pyglet_coords(self.anchor,self.shape,self.poly)
+        self.poly.anchor_position=self.pos
 
     
     def Body(self):

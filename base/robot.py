@@ -42,8 +42,8 @@ class Robot:
 
         scene.add_sensor(self._front)
 
-        self._m1.set_power(10)
-        self._m2.set_power(10)
+        self._m1.set_power(99)
+        self._m2.set_power(100)
 
         self.setPosition(position)
 

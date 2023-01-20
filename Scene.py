@@ -92,7 +92,7 @@ class Scene:
 
         batch.draw()
 
-        self._space.debug_draw(self.debug)
+        #self._space.debug_draw(self.debug)
 
     def update(self,dt):
         
