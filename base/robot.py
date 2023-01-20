@@ -14,12 +14,12 @@ class Robot:
 
     def __init__(self,scene:Scene,position=(0,0)):
         self._scene = scene
-        self._base = Rect("base",scene.Space(),(50,50),(0,0),pymunk.Body(10,1))
+        self._base = Rect("base",scene.Space(),(50,50),(-25,-25),pymunk.Body(10,1))
         self._base.Color((231, 255, 13,255))
         #self._base.Shape().collision_type=2
 
-        self._motor1=Rect("motor1",scene.Space(),(20,5),(0,25),self._base.Body())
-        self._motor2=Rect("motor2",scene.Space(),(20,5),(0,-25),self._base.Body())
+        self._motor1=Rect("motor1",scene.Space(),(20,5),(-10,25),self._base.Body())
+        self._motor2=Rect("motor2",scene.Space(),(20,5),(-10,-30),self._base.Body())
         self._motor1.Shape().collision_type=2
         self._motor2.Shape().collision_type=2
 
@@ -42,8 +42,8 @@ class Robot:
 
         scene.add_sensor(self._front)
 
-        self._m1.set_power(100)
-        self._m2.set_power(100)
+        self._m1.set_power(10)
+        self._m2.set_power(10)
 
         self.setPosition(position)
 

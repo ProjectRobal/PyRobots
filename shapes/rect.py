@@ -10,7 +10,7 @@ import utils
 
 def MakeRect(size:Vec2d,position:Vec2d,body)->pymunk.Poly:
 
-    return pymunk.Poly(body,[(-size[0]/2 + position[0],-size[1]/2 + position[1]), (size[0]/2 +position[0],-size[1]/2 + position[1]), (size[0]/2+position[0],size[1]/2+ position[1]), (-size[0]/2+ position[0],size[1]/2 + position[1])])
+    return pymunk.Poly(body,[(position[0],position[1]), (size[0]+position[0],position[1]), (size[0]+position[0],size[1]+ position[1]), ( position[0],size[1] + position[1])])
 
 class Rect(Object):
     def __init__(self,name,space,size:Vec2d,pos:Vec2d,body:pymunk.Body):
@@ -23,6 +23,7 @@ class Rect(Object):
             space.add(self.shape)
         self.color=(0,0,0)
         self.anchor=utils.get_anchor(self.shape)
+        print(self.anchor)
         self.pos=pos
 
     def Color(self,color=None):
@@ -32,7 +33,7 @@ class Rect(Object):
 
     def draw(self,batch):
         self.rec=shapes.Polygon(*self.shape.get_vertices(),color=self.color,batch=batch)
-        utils._to_pyglet_coords(self.anchor,self.shape,self.rec)
+        utils._to_pyglet_coords(self.pos,self.shape,self.rec)
 
     def Body(self):
         return self.body

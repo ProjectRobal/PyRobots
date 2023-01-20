@@ -46,7 +46,7 @@ class FrictionZone(Object):
         if abs(velocity) <= 0:
             return True
 
-        print(abs(velocity))
+        #print(abs(velocity))
 
         mass=on_floor.body.mass
 
@@ -56,7 +56,7 @@ class FrictionZone(Object):
 
         if abs(velocity)-abs(f_force*STEP_TIME)<=0:
             on_floor.body.velocity=(0,0)
-            print("Not moving")
+            #print("Not moving")
             return True
 
         on_floor.body.apply_force_at_local_point(f_force)

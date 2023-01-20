@@ -31,14 +31,13 @@ obstacle.Color((255,0,0))
 #f_zone=FrictionZone("floor",space,[(-200,-200),(200,-200),(200,200),(-200,200)],0.4,[2])
 #f_zone.Color((250, 209, 95))
 
-
 #scene.add_object(f_zone)
 scene.add_object(obstacle)
 
 rob=Robot(scene,(0,0))
 
-obstacle.Body().position=(200,200)
+#obstacle.Body().position=(200,200)
 
-rob.setPosition((50,200))
+rob.setPosition((50,175))
 
 scene.run()

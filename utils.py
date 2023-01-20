@@ -24,7 +24,7 @@ def get_anchor(shape:pymunk.Shape):
 
 def _to_pyglet_coords(anchor,shape,output):
     output.position=shape.body.position
-    output.anchor_position=anchor
+    output.anchor_position=(-anchor[0],-anchor[1])
     output.rotation=-shape.body.angle*(180.0/math.pi)
 
 def to_pyglet_coords(shape,output):
