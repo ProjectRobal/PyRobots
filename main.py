@@ -7,7 +7,6 @@ import pyglet
 from base.object import Object
 from base.eventobject import EventObject
 
-from sensors.frictionsensor import FrictionSensor
 from sensors.gyrosensor import Gyro
 
 from base.robot import Robot
@@ -18,7 +17,7 @@ from Scene import Scene
 
 from shapes.rect import Rect
 from zone.friction_zone import FrictionZone
-
+from zone.hole import Hole
 
 #To do:
 # Hole sensor (floor sensor)
@@ -39,6 +38,9 @@ obstacle.Color((255,0,0))
 f_zone=FrictionZone("floor",space,[(-200,-200),(200,-200),(200,200),(-200,200)],0.4,[2])
 f_zone.Color((250, 209, 95))
 
+h_zone=Hole("hole",space,[(200,-200),(600,-200),(600,200),(200,200)])
+
+scene.add_object(h_zone)
 scene.add_object(f_zone)
 scene.add_object(obstacle)
 

@@ -30,19 +30,13 @@ class Laser(Sensor):
         pass
 
     def post_solve(self,dt):
-        rotation=self._obj.Body().angle
-
         #transform sensor position
 
-        self.start=self._pos
+        self.start=self._obj.Body().local_to_world(self._pos)
 
-        self.start=self.start.rotated(rotation)
+        self.end=(self._pos+self._distance*self._direction)
 
-        self.start=self._obj.Body().position+self.start
-
-        dir=self._direction.rotated(rotation)
-
-        self.end=(self.start+dir*self._distance)
+        self.end=self._obj.Body().local_to_world(self.end)
 
         info=self._space.segment_query(self.start,self.end,self._radius,pymunk.ShapeFilter())
 

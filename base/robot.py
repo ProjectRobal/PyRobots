@@ -2,7 +2,7 @@ from base.object import Object
 from robots.dcmotor import DCMotor
 from sensors.laser import Laser
 from sensors.gyrosensor import Gyro
-from sensors.frictionsensor import FrictionSensor
+from sensors.holesensor import HoleSensor
 
 from shapes.rect import Rect
 
@@ -26,13 +26,14 @@ class Robot:
         self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(0.0,50.0),100,500)
         self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(0.0,-50.0),100,500)
 
+        self._hole=HoleSensor("floor",scene.Space(),self._base,(50,0))
+
         self._front=Laser("front",scene.Space(),self._base,(26,0),(1,0),100,1)
 
         self._gyro=Gyro("gyro",scene.Space(),self._base)
-        self._friction=FrictionSensor("friction",scene.Space(),self._base,1)
 
         self._front.Show(True)
-
+        self._hole.Show(True)
         
         scene.add_object(self._base)
         scene.add_object(self._motor1)
@@ -41,9 +42,10 @@ class Robot:
         scene.add_object(self._m2)
 
         scene.add_sensor(self._front)
+        scene.add_sensor(self._hole)
 
-        self._m1.set_power(99)
-        self._m2.set_power(100)
+        self._m1.set_power(90)
+        self._m2.set_power(90)
 
         self.setPosition(position)
 

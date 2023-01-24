@@ -25,8 +25,6 @@ class Gyro(Sensor):
         self._velocity1 = self._obj.Body().velocity
         self._dt=dt
 
-
-
     def post_solve(self,dt):
         self._velocity2 = self._obj.Body().velocity
         self._dt+=dt
