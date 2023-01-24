@@ -20,8 +20,6 @@ from zone.friction_zone import FrictionZone
 from zone.hole import Hole
 
 #To do:
-# Hole sensor (floor sensor)
-# Hole zone
 # Microphone
 # Sound source
 # HUD
