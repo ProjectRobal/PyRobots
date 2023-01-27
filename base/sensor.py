@@ -24,10 +24,10 @@ class Sensor:
         return self._obj
 
     def pre_solve(self,dt):
-        raise NotImplementedError()
+        pass
 
     def post_solve(self,dt):
-        raise NotImplementedError()
+        pass
 
     def visualize(self,batch):
         pass

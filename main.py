@@ -21,12 +21,14 @@ from zone.hole import Hole
 
 from hud.label import Label
 
+import pyaudio
+
 #To do:
 # Microphone
 # Sound source
 # HUD:
 # Background to label
-# arrow indicators
+# speedometer
 # progress bars
 
 space=pymunk.Space(True)
