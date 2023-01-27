@@ -13,7 +13,10 @@ class HUD:
 
     '''retrive a value from the HUD'''
     def value(self):
-        return copy(self._value)
+        if callable(self._value):
+            return self._value()
+
+        return self._value
 
     '''How to display the value'''
     def draw(self,batch):

@@ -32,6 +32,9 @@ class Robot:
 
         self._gyro=Gyro("gyro",scene.Space(),self._base)
 
+        # a list of microphones
+        self._microphones=[]
+
         self._front.Show(True)
         self._hole.Show(True)
         
@@ -55,5 +58,13 @@ class Robot:
     def setPosition(self,position):
         self._base.Body().position = position
         self._scene.Space().reindex_shapes_for_body(self._base.Body())
+
+    def applySound(self,pos,buffer):
+        '''In this function sound in a buffer will be applied to microphones
+        pos - a position of a sound source
+        buffer - a sound sample'''
+        
+        for micro in self._microphones:
+            m_pos=micro.getPosition()
         
 

@@ -19,10 +19,15 @@ from shapes.rect import Rect
 from zone.friction_zone import FrictionZone
 from zone.hole import Hole
 
+from hud.label import Label
+
 #To do:
 # Microphone
 # Sound source
-# HUD
+# HUD:
+# Background to label
+# arrow indicators
+# progress bars
 
 space=pymunk.Space(True)
 '''use 4 threads'''
@@ -38,11 +43,20 @@ f_zone.Color((250, 209, 95))
 
 h_zone=Hole("hole",space,[(200,-200),(600,-200),(600,200),(200,200)])
 
+
+
 scene.add_object(h_zone)
 scene.add_object(f_zone)
 scene.add_object(obstacle)
 
+
 rob=Robot(scene,(0,0))
+
+#HUD
+
+hello=Label("hello",rob.getPosition,(0,100))
+
+scene.add_hud(hello)
 
 #obstacle.Body().position=(200,200)
 
