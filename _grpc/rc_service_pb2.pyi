@@ -35,11 +35,11 @@ class Gyroscope(_message.Message):
     ACCEL_RANGE_FIELD_NUMBER: _ClassVar[int]
     GYROSCOPE_FIELD_NUMBER: _ClassVar[int]
     GYRO_RANGE_FIELD_NUMBER: _ClassVar[int]
-    accel_range: _containers.RepeatedScalarFieldContainer[float]
+    accel_range: int
     acceleration: _containers.RepeatedScalarFieldContainer[float]
-    gyro_range: _containers.RepeatedScalarFieldContainer[float]
+    gyro_range: int
     gyroscope: _containers.RepeatedScalarFieldContainer[float]
-    def __init__(self, acceleration: _Optional[_Iterable[float]] = ..., gyroscope: _Optional[_Iterable[float]] = ..., accel_range: _Optional[_Iterable[float]] = ..., gyro_range: _Optional[_Iterable[float]] = ...) -> None: ...
+    def __init__(self, acceleration: _Optional[_Iterable[float]] = ..., gyroscope: _Optional[_Iterable[float]] = ..., accel_range: _Optional[int] = ..., gyro_range: _Optional[int] = ...) -> None: ...
 
 class Message(_message.Message):
     __slots__ = ["floor", "front", "gyroscope", "left", "message", "right", "status"]

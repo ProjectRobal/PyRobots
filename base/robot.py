@@ -16,6 +16,7 @@ from shapes.rect import Rect
 from Scene import Scene
 
 import pymunk
+import threading
 
 class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
@@ -91,11 +92,11 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
     def UpdateParams(self,params):
 
-        self._m1.set_power(params["Motors"]["speedA"])
-        self._m2.set_power(params["Motors"]["speedB"])
+        self._m1.set_power(params.mA.speed)
+        self._m2.set_power(params.mB.speed)
 
-        self._m1.set_direction(params["Motors"]["directionA"])
-        self._m2.set_direction(params["Motors"]["directionB"])
+        self._m1.set_direction(params.mA.direction)
+        self._m2.set_direction(params.mB.direction)
 
     def PackageData(self):
         
@@ -103,11 +104,11 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         gyro.acceleration[:]=self._gyro.get_accel()
         gyro.gyroscope[:]=self._gyro.get_angular_velocity()
-        gyro.accel_range=[9.81*16]*3
-        gyro.gyro_range=[2000]*3
+        gyro.accel_range=int(9.81*16)
+        gyro.gyro_range=2000
 
         front=DistanceSensor(distance=self._front.getDistance())
-        floor=DistanceSensor(distance=self._floor.getDistance())
+        floor=DistanceSensor(distance=self._hole.Distance())
 
         left=AudioChunk()
         right=AudioChunk()
@@ -132,13 +133,18 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         return _None()
 
-    def run(self):
+    def _run_server(self):
         server= grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
         rc_service_pb2_grpc.add_RCRobotServicer_to_server(
             self,server
         )
-        server.add_insecure_port('127.0.0.1:5051')
+        server.add_insecure_port('192.168.2.142:5051')
         server.start()
-        #server.wait_for_termination()
+        server.wait_for_termination()
+
+    def run(self):
+        server=threading.Thread(target=self._run_server,args=[])
+        server.start()
+        
         

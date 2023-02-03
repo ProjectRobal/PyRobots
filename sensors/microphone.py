@@ -1,14 +1,16 @@
 from base.sensor import Sensor
+import numpy as np
 
 import pyglet
 import pymunk
+
 
 class Microphone(Sensor):
     def __init__(self, name, space, obj,pos:pymunk.Vec2d):
         super().__init__(name, space, obj)
         self._pos=pos
         self._start=pos
-        self._buffer=[]
+        self._buffer=np.ndarray(32000,dtype=np.int32)
 
     def post_solve(self, dt):
         self._start=self.getObject().Body().local_to_world(self._pos)
@@ -22,7 +24,6 @@ class Microphone(Sensor):
 
     def Buffer(self,buffer=None):
         if buffer is None:
-            return buffer
+            return self._buffer
         
         self._buffer=buffer
-        print(buffer[200:210])

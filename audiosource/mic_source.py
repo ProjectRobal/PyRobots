@@ -10,8 +10,8 @@ import math
 
 import numpy as np
 
-CHUNK=3200
-RATE=1600
+CHUNK=32000
+RATE=16000
 CHANNELS=1
 
 class MicSource(EventObject):
