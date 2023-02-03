@@ -19,6 +19,7 @@ class Rect(Object):
         self.shape=MakeRect(size,pos,self.body)
         if body.space is None:
             space.add(self.body,self.shape)
+            print("Aleardy in space")
         else:
             space.add(self.shape)
         self.color=(0,0,0)

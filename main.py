@@ -37,32 +37,29 @@ space.threads=4
 
 scene=Scene(space)
 
-wall_up=Rect("obstacle",space,(100,100),(0,0),pymunk.Body(0,0,body_type=pymunk.Body.STATIC))
+wall_up=Rect("wall_up",space,(750,25),(25,575),space.static_body)
 wall_up.Color((255,0,0))
 
-wall_down=Rect("obstacle",space,(100,100),(0,0),pymunk.Body(0,0,body_type=pymunk.Body.STATIC))
+wall_down=Rect("wall_down",space,(750,25),(25,0),space.static_body)
 wall_down.Color((0,255,0))
 
-wall_left=Rect("obstacle",space,(100,100),(50,200),pymunk.Body(0,0,body_type=pymunk.Body.STATIC))
+wall_left=Rect("wall_left",space,(25,800),(0,0),space.static_body)
 wall_left.Color((0,0,255))
 
-wall_right=Rect("obstacle",space,(1800,25),(0,0),pymunk.Body(0,0,body_type=pymunk.Body.STATIC))
+wall_right=Rect("wall_right",space,(25,800),(775,0),space.static_body)
 wall_right.Color((0,0,0))
 
 f_zone=FrictionZone("floor",space,[(0,0),(1800,0),(1800,1200),(0,1200)],0.4,[2])
 f_zone.Color((250, 209, 95))
 
-#h_zone=Hole("hole",space,[(200,-200),(600,-200),(600,200),(200,200)])
+#h_zone=Hole("hole",space,[(0,0),(200,0),(200,200),(0,200)])
 
-
-
-#scene.add_object(h_zone)
 scene.add_object(f_zone)
 scene.add_object(wall_up)
 scene.add_object(wall_down)
 scene.add_object(wall_left)
 scene.add_object(wall_right)
-
+#scene.add_object(h_zone)
 
 rob=Robot(scene,(0,0))
 
