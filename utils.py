@@ -22,6 +22,32 @@ def get_anchor(shape:pymunk.Shape):
 
     return pymunk.Vec2d((-left+right)/2,(top-bottom)/2)
 
+def get_anchor_static(shape:pymunk.Shape):
+
+    vertices=shape.get_vertices()
+
+    left=vertices[0][0]
+    right=vertices[0][0]
+    top=vertices[0][1]
+    bottom=vertices[0][1]
+
+    for v in vertices:
+        if v[0]<left:
+            left=v[0]
+        if v[0]>right:
+            right=v[0]
+        if v[1]>top:
+            top=v[1]
+        if v[1]<bottom:
+            bottom=v[1]
+
+    size=(abs(left-right),abs(top-bottom))
+
+    x=right-size[0]
+    y=top-size[1]
+
+    return pymunk.Vec2d(x,y)
+
 def _to_pyglet_coords(anchor,shape,output):
     output.position=shape.body.position
     output.anchor_position=(-anchor[0],-anchor[1])

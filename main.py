@@ -49,17 +49,20 @@ wall_left.Color((0,0,255))
 wall_right=Rect("wall_right",space,(25,800),(775,0),space.static_body)
 wall_right.Color((0,0,0))
 
-f_zone=FrictionZone("floor",space,[(0,0),(1800,0),(1800,1200),(0,1200)],0.4,[2])
+f_zone=FrictionZone("floor",space,[(0,0),(800,0),(800,600),(0,600)],0.4,[2])
 f_zone.Color((250, 209, 95))
 
-#h_zone=Hole("hole",space,[(0,0),(200,0),(200,200),(0,200)])
+hole_pos=(300,400)
+
+h_zone=Hole("hole",space,[(hole_pos[0],hole_pos[1]),(100+hole_pos[0],hole_pos[1]),
+(100+hole_pos[0],100+hole_pos[1]),(hole_pos[0],100+hole_pos[1])])
 
 scene.add_object(f_zone)
 scene.add_object(wall_up)
 scene.add_object(wall_down)
 scene.add_object(wall_left)
 scene.add_object(wall_right)
-#scene.add_object(h_zone)
+scene.add_object(h_zone)
 
 rob=Robot(scene,(0,0))
 

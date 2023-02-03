@@ -19,7 +19,7 @@ class Hole(Object):
 
         self._color=(0,0,0)
 
-        self.pos=utils.get_anchor(self.shape)
+        self.pos=utils.get_anchor_static(self.shape)
 
         space.add(self.body,self.shape)
 
@@ -30,7 +30,9 @@ class Hole(Object):
 
     def draw(self,batch):
         self.rec=shapes.Polygon(*self.shape.get_vertices(),color=self._color,batch=batch)
-        self.rec.anchor_position=self.pos
+        #self.rec.anchor_position=self.pos
+        self.rec.position=self.pos
+        #utils._to_pyglet_coords(self.pos,self.shape,self.rec)
 
     def Body(self):
         return self.body
