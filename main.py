@@ -56,12 +56,14 @@ rob=Robot(scene,(0,0))
 
 #HUD
 
-hello=Label("hello",rob.getPosition,(0,100))
+#hello=Label("hello",rob.getPosition,(0,100))
 
-scene.add_hud(hello)
+#scene.add_hud(hello)
 
 #obstacle.Body().position=(200,200)
 
 rob.setPosition((50,175))
+
+rob.run()
 
 scene.run()

@@ -15,6 +15,7 @@ class DCMotor(Object):
         self._body=body
         self._origin = origin
         self._k=2.0
+        self._direction=1
 
 
     def set_power(self,power):
@@ -22,11 +23,17 @@ class DCMotor(Object):
             return
         self._power = power
 
+    def set_direction(self,direction):
+        if direction==1:
+            self._direction=1
+        else:
+            self._direction=-1
+
     def Loop(self,dt):
 
         vel=abs(self.Body().velocity)/self._k
 
-        force=self._torque*math.exp(-vel)*(self._power/100.0)
+        force=(self._torque*math.exp(-vel)*(self._power/100.0))*self._direction
         
         force_vec=(force*math.cos(self.Body().angle),force*math.sin(self.Body().angle))
 
