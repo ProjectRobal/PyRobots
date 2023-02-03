@@ -27,8 +27,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self._servo=[0,0]
         #self._base.Shape().collision_type=2
 
-        self._motor1=Rect("motor1",scene.Space(),(50,5),(-25,25),self._base.Body())
-        self._motor2=Rect("motor2",scene.Space(),(50,5),(-25,-30),self._base.Body())
+        self._motor1=Rect("motor1",scene.Space(),(50,15),(-25,25),self._base.Body())
+        self._motor2=Rect("motor2",scene.Space(),(50,15),(-25,-40),self._base.Body())
         self._motor1.Shape().collision_type=2
         self._motor2.Shape().collision_type=2
 
@@ -66,8 +66,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             micro.Show(True)
             scene.add_sensor(micro)
             
-        self._m1.set_power(90)
-        self._m2.set_power(90)
+        self._m1.set_power(0)
+        self._m2.set_power(0)
 
         self.setPosition(position)
 
