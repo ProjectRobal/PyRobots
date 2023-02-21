@@ -37,6 +37,10 @@ class Gyro(Sensor):
         if self._dt==0:
             return
         dv=self._velocity2-self._velocity1
+        #print(dv)
+        #print(dt)
         self._acceleration=np.array((0,dv[0]*GYRO_RANGE/(16*G*self._dt) ,dv[1]*GYRO_RANGE/(16*G*self._dt)),dtype=np.int32)
         self._angular_velocity=np.array([0,0,self._obj.Body().angular_velocity*ACCEL_RANGE/GYRO_DIM],dtype=np.int32)
+        #print(self._acceleration)
+        #print(self._angular_velocity)
 

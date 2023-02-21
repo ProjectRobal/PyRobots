@@ -18,6 +18,7 @@ from Scene import Scene
 import pymunk
 import threading
 import numpy as np
+from config import *
 
 class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
@@ -64,6 +65,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         scene.add_sensor(self._front)
         scene.add_sensor(self._hole)
+        scene.add_sensor(self._gyro)
 
         for micro in self._microphones:
             micro.Show(True)
@@ -127,6 +129,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
     def Process(self, request, context):
 
         self.UpdateParams(request)
+
+        self._scene.update(STEP_TIME)
         
         return self.PackageData()
 

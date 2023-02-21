@@ -20,8 +20,8 @@ class Scene:
         self._space=space
         self.init_events()
         self.debug=pymunk.pyglet_util.DrawOptions()
-
-        pyglet.clock.schedule_interval(self.update,STEP_TIME)
+        self.update(STEP_TIME)
+        #pyglet.clock.schedule_interval(self.update,STEP_TIME)
 
     def on_key_press(self,symbol, modifiers):
         for obj in self._objects.values():
