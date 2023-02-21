@@ -26,4 +26,4 @@ class Microphone(Sensor):
         if buffer is None:
             return self._buffer
         
-        self._buffer=buffer
+        self._buffer=np.array(buffer,dtype=np.int32)

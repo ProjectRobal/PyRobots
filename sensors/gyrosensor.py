@@ -2,19 +2,21 @@
 from base.sensor import Sensor
 from pymunk.vec2d import Vec2d
 
+import numpy as np
+
 G=9.81
 
-GYRO_DIM=2000
+GYRO_DIM=2000.0
 
-ACCEL_RANGE=2**16 -1
-GYRO_RANGE=2**16 -1
+ACCEL_RANGE=float(2**16 -1)
+GYRO_RANGE=float(2**16 -1)
 
 class Gyro(Sensor):
     '''pos a position of the gyroscope respect to the obj ( a tuple (x,y))''' 
     def __init__(self,name,scene,obj):
         super().__init__(name,scene,obj)
-        self._acceleration=(0,0,0)
-        self._angular_velocity = (0,0,0)
+        self._acceleration=np.array([0,0,0],dtype=np.int32)
+        self._angular_velocity = np.array([0,0,0],dtype=np.int32)
         self._velocity1=Vec2d(0,0)
         self._velocity2=Vec2d(0,0)
         self._dt=0
@@ -35,5 +37,6 @@ class Gyro(Sensor):
         if self._dt==0:
             return
         dv=self._velocity2-self._velocity1
-        self._acceleration=(0,dv[0]*GYRO_RANGE/(16*G*self._dt) ,dv[1]*GYRO_RANGE/(16*G*self._dt))
-        self._angular_velocity=(0,0,self._obj.Body().angular_velocity*ACCEL_RANGE/GYRO_DIM)
+        self._acceleration=np.array((0,dv[0]*GYRO_RANGE/(16*G*self._dt) ,dv[1]*GYRO_RANGE/(16*G*self._dt)),dtype=np.int32)
+        self._angular_velocity=np.array([0,0,self._obj.Body().angular_velocity*ACCEL_RANGE/GYRO_DIM],dtype=np.int32)
+

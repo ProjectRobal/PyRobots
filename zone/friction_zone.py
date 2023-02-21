@@ -24,6 +24,7 @@ class FrictionZone(Object):
         self.body=pymunk.Body(0,0,body_type=pymunk.Body.STATIC)
 
         self.shape=pymunk.Poly(self.body,coordinates)
+        self.shape.filter=pymunk.ShapeFilter(group=1)
         self.shape.sensor=True
         self.shape.collision_type=id
 

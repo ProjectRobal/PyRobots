@@ -16,6 +16,7 @@ class Hole(Object):
         self.shape=pymunk.Poly(self.body,coordinates)
         self.shape.sensor=True
         self.shape.collision_type=id
+        self.shape.filter=pymunk.ShapeFilter(group=1)
 
         self._color=(0,0,0)
 

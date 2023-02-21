@@ -17,6 +17,7 @@ from Scene import Scene
 
 import pymunk
 import threading
+import numpy as np
 
 class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
@@ -24,6 +25,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self._scene = scene
         self._base = Rect("base",scene.Space(),(50,50),(-25,-25),pymunk.Body(10,1))
         self._base.Color((231, 255, 13,255))
+        self._base.Shape().filter=pymunk.ShapeFilter(group=1)
 
         self._servo=[0,0]
         #self._base.Shape().collision_type=2
@@ -33,8 +35,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self._motor1.Shape().collision_type=2
         self._motor2.Shape().collision_type=2
 
-        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(-25.0,50.0),100,500)
-        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(25.0,-50.0),100,500)
+        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(-25.0,50.0),100,50)
+        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(25.0,-50.0),100,50)
 
         self._hole=HoleSensor("floor",scene.Space(),self._base,(50,0))
 
@@ -102,8 +104,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         
         gyro=Gyroscope()
 
-        gyro.acceleration[:]=self._gyro.get_accel()
-        gyro.gyroscope[:]=self._gyro.get_angular_velocity()
+        gyro.acceleration[:]=np.array(self._gyro.get_accel(),dtype=np.int32)
+        gyro.gyroscope[:]=np.array(self._gyro.get_angular_velocity(),dtype=np.int32)
         gyro.accel_range=int(9.81*16)
         gyro.gyro_range=2000
 
@@ -118,6 +120,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         msg=Message(front=front,floor=floor,
         left=left,right=right,gyroscope=gyro,status=0,message="")
+
 
         return msg
 
@@ -134,17 +137,19 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         return _None()
 
     def _run_server(self):
-        server= grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+        self.server= grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
         rc_service_pb2_grpc.add_RCRobotServicer_to_server(
-            self,server
+            self,self.server
         )
-        server.add_insecure_port('192.168.2.142:5051')
-        server.start()
-        server.wait_for_termination()
+        self.server.add_insecure_port('127.0.0.1:5051')
+        self.server.start()
+        self.server.wait_for_termination()
 
     def run(self):
         server=threading.Thread(target=self._run_server,args=[])
         server.start()
         
-        
+    def __del__(self):
+        super().__del__()
+        self.server.stop()

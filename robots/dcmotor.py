@@ -19,15 +19,22 @@ class DCMotor(Object):
 
 
     def set_power(self,power):
-        if power<0 and power>100:
-            return
+        if power<0:
+            power=0
+        if power>100:
+            power=100
         self._power = power
 
     def set_direction(self,direction):
-        if direction==1:
+
+
+        if direction==0:
             self._direction=1
-        else:
+        elif direction==1:
             self._direction=-1
+        else:
+            self._direction=0
+
 
     def Loop(self,dt):
 

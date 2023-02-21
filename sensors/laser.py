@@ -23,7 +23,7 @@ class Laser(Sensor):
     def visualize(self,batch):
         self.line=shapes.Line(self.start[0],self.start[1],self.end[0],self.end[1],color=(255,0,0),batch=batch)
 
-    def getDistance(self):
+    def getDistance(self)->int:
         return self._mesaurment
 
     def pre_solve(self,dt):
@@ -38,14 +38,16 @@ class Laser(Sensor):
 
         self.end=self._obj.Body().local_to_world(self.end)
 
-        info=self._space.segment_query(self.start,self.end,self._radius,pymunk.ShapeFilter())
+        info=self._space.segment_query(self.start,self.end,self._radius,pymunk.ShapeFilter(group=1))
+
+        self._mesaurment=8160
 
         for i in info:
             if i.shape is not None:
-                self._mesaurment=i.alpha*self._distance
+                print(i.shape)
+                self._mesaurment=int(i.alpha*self._distance)
                 self.end=i.point
+                print(i.point)
                 break
-            else:
-                self._mesaurment=8160
-
+                
         #print(self._mesaurment)

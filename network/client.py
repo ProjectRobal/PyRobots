@@ -5,7 +5,7 @@ import json
 
 def send_message(stub:pb2_grpc.RCRobotStub,speedA,directionA,speedB,directionB,angel1,angel2):
 
-    msg=Command(mA=Motor(direction=directionA,speed=speedA),mB=Motor(direction=directionB,speed=speedB),ear1=Servo(angle=angel1),ear2=Servo(angle=angel2))
+    msg=Command(mA=Motor(direction=int(directionA),speed=int(speedA)),mB=Motor(direction=int(directionB),speed=int(speedB)),ear1=Servo(angle=int(angel1)),ear2=Servo(angle=int(angel2)))
 
     return stub.SendCommand(msg)    
 
@@ -15,7 +15,7 @@ def send_message_data(stub:pb2_grpc.RCRobotStub,data):
 
 def process(stub:pb2_grpc.RCRobotStub,speedA,directionA,speedB,directionB,angel1,angel2):
 
-    msg=Command(mA=Motor(direction=directionA,speed=speedA),mB=Motor(direction=directionB,speed=speedB),ear1=Servo(angle=angel1),ear2=Servo(angle=angel2))
+    msg=Command(mA=Motor(direction=int(directionA),speed=int(speedA)),mB=Motor(direction=int(directionB),speed=int(speedB)),ear1=Servo(angle=int(angel1)),ear2=Servo(angle=int(angel2)))
     
     return stub.Process(msg)
 
