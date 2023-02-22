@@ -12,7 +12,7 @@ from config import *
 
 class Scene:
     # win - a reference to the window object to draw on
-    def __init__(self,space:pymunk.Space,width=800,height=600):
+    def __init__(self,space:pymunk.Space,width=800,height=600,remote=True):
         self._window = pyglet.window.Window(width,height)
         self._objects={}
         self._sensors={}
@@ -21,7 +21,8 @@ class Scene:
         self.init_events()
         self.debug=pymunk.pyglet_util.DrawOptions()
         self.update(STEP_TIME)
-        #pyglet.clock.schedule_interval(self.update,STEP_TIME)
+        if not remote:
+            pyglet.clock.schedule_interval(self.update,STEP_TIME)
 
     def on_key_press(self,symbol, modifiers):
         for obj in self._objects.values():

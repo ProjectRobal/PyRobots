@@ -53,7 +53,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         ]
 
         #self._a_source=MicSource("mic",scene.Space(),self._microphones,1.0)
-        self._a_source=MicSourceStatic("mic",scene.Space(),600,500,self._microphones,1.0)
+        self._a_source=MicSourceStatic("mic",scene.Space(),600,500,self._microphones,0.001)
 
         self._front.Show(True)
         self._hole.Show(True)
@@ -110,7 +110,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         gyro.acceleration[:]=np.array(self._gyro.get_accel(),dtype=np.int32)
         gyro.gyroscope[:]=np.array(self._gyro.get_angular_velocity(),dtype=np.int32)
-        gyro.accel_range=int(9.81*16)
+        gyro.accel_range=16
         gyro.gyro_range=2000
 
         front=DistanceSensor(distance=self._front.getDistance())
@@ -119,12 +119,12 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         left=AudioChunk()
         right=AudioChunk()
 
-        left.data[:]=self._microphones[0].Buffer()
-        right.data[:]=self._microphones[1].Buffer()
+        left.data[:]=np.array(self._microphones[0].Buffer(),dtype=np.int32)
+        right.data[:]=np.array(self._microphones[1].Buffer(),dtype=np.int32)
+        
 
         msg=Message(front=front,floor=floor,
         left=left,right=right,gyroscope=gyro,status=0,message="")
-
 
         return msg
 

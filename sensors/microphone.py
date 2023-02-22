@@ -10,7 +10,7 @@ class Microphone(Sensor):
         super().__init__(name, space, obj)
         self._pos=pos
         self._start=pos
-        self._buffer=np.ndarray(32000,dtype=np.int32)
+        self._buffer=np.zeros(32000,dtype=np.int32)
 
     def post_solve(self, dt):
         self._start=self.getObject().Body().local_to_world(self._pos)

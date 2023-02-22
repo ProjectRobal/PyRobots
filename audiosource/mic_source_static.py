@@ -45,14 +45,14 @@ class MicSourceStatic(Object):
 
                 distance=abs(_pos-self.m_pos)
 
-                output=np.array([],dtype=np.int16)
+                output=np.array([],dtype=np.int32)
 
                 for d in data:
-                    output=np.append(output,d*math.exp(-self._damping*float(distance)))
+                    output=np.append(output,int(d*math.exp(-self._damping*float(distance))))
 
                 input=rec.Buffer()
 
-                rec.Buffer(input+output)
+                rec.Buffer(np.add(output,input,dtype=np.int32))
 
     def draw(self,batch):
         self._mic=pyglet.shapes.Triangle(self.m_pos.x-self.SYMBOL_SIZE,self.m_pos.y-self.SYMBOL_SIZE,self.m_pos.x+self.SYMBOL_SIZE,self.m_pos.y-self.SYMBOL_SIZE,
