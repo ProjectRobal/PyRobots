@@ -5,6 +5,7 @@ from sensors.gyrosensor import Gyro
 from sensors.holesensor import HoleSensor
 from sensors.microphone import Microphone
 from audiosource.mic_source import MicSource
+from audiosource.mic_source_static import MicSourceStatic
 
 from concurrent import futures
 import grpc
@@ -51,7 +52,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             Microphone("mic2",scene.Space(),self._base,(20,-25))
         ]
 
-        self._a_source=MicSource("mic",scene.Space(),self._microphones,1.0)
+        #self._a_source=MicSource("mic",scene.Space(),self._microphones,1.0)
+        self._a_source=MicSourceStatic("mic",scene.Space(),600,500,self._microphones,1.0)
 
         self._front.Show(True)
         self._hole.Show(True)

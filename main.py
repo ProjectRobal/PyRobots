@@ -75,30 +75,33 @@ def vec2d_to_str(vec:pymunk.Vec2d)->str:
     return str(vec.x)+","+str(vec.y)
 
 def make_label(text:str,fun:callable,x,y,size=10)->list[HUD]:
-    label=Label(text,lambda x=None: text,(x,y),size)
+    label=Label(text,text,(x,y),size)
     info=Label(text+"_info",fun,(x,y-size-10),size)
 
     return [label,info]
 
 def make_hud():
 
-    labs:list[HUD]=[*make_label("pos:",lambda x=None: vec2d_to_str(rob.getPosition()),0,50),
-                    *make_label("gyro:",lambda x=None: str(rob._gyro.get_angular_velocity()),100,50),
-                    *make_label("accel:",lambda x=None: str(rob._gyro.get_accel()),200,50),
-                    *make_label("front:",lambda x=None: str(rob._front.getDistance()),300,70),
-                    *make_label("floor:",lambda x=None: str(rob._hole.Distance()),300,30),
+    labs:list[HUD]=[*make_label("pos:",lambda x=None: vec2d_to_str(rob.getPosition()),100,50),
+                    *make_label("gyro:",lambda x=None: str(rob._gyro.get_angular_velocity()),250,75),
+                    *make_label("accel:",lambda x=None: str(rob._gyro.get_accel()),250,25),
+                    *make_label("front:",lambda x=None: str(rob._front.getDistance())+" mm",400,70),
+                    *make_label("floor:",lambda x=None: str(rob._hole.Distance())+" mm",400,30),
                     ]
 
     info_b=Board("board_bottom",Box(0,100,25,25,color=(255,255,0)),Box(0,0,800,100,color=(255,255,255)),labs)
+    info_b_label=Label("board_b_label","Sensors",(0,125),10)
 
     scene.add_hud(info_b)
 
     for l in labs:
         scene.add_hud(l)
+    
+    scene.add_hud(info_b_label)
 
     labs1:list[HUD]=[
-        *make_label("motorA:",lambda x=None: str(rob._m1._power)+" "+str(rob._m1._direction),100,70),
-        *make_label("motorB:",lambda x=None: str(rob._m2._power)+" "+str(rob._m2._direction),100,30),
+        *make_label("motorA:",lambda x=None: "pow: "+str(rob._m1._power)+" dir:"+str(rob._m1._direction),100,70),
+        *make_label("motorB:",lambda x=None: "pow: "+str(rob._m2._power)+" dir:"+str(rob._m2._direction),100,30),
         Gauge("servo1",lambda x=None: rob.getServo()[0],250,50,0,180,0,180,design=GaugeDesign(radius=30)),
         Label("servo1_label","angel",(225,0),10),
         Gauge("servo2",lambda x=None: rob.getServo()[1],350,50,0,180,0,180,design=GaugeDesign(radius=30)),
@@ -106,11 +109,14 @@ def make_hud():
     ]
 
     info_a=Board("board_top",Box(0,300,25,25,color=(255,0,255)),Box(0,0,800,100,color=(255,255,255)),labs1)
+    info_a_label=Label("board_a_label","Outputs",(0,325),10)
 
     scene.add_hud(info_a)
 
     for l in labs1:
         scene.add_hud(l)
+
+    scene.add_hud(info_a_label)
 
 
 make_hud()
