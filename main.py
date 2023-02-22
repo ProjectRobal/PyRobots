@@ -19,7 +19,9 @@ from shapes.rect import Rect
 from zone.friction_zone import FrictionZone
 from zone.hole import Hole
 
+from base.hud import HUD
 from hud.label import Label
+from hud.board import Board,Box
 
 import pyaudio
 
@@ -66,13 +68,34 @@ scene.add_object(h_zone)
 
 rob=Robot(scene,(0,0))
 
-#HUD
+#HUD:
 
-#hello=Label("hello",rob.getPosition,(0,100))
+def vec2d_to_str(vec:pymunk.Vec2d)->str:
+    return str(vec.x)+","+str(vec.y)
 
-#scene.add_hud(hello)
+def make_label(text:str,fun:callable,x,y,size=10)->list[HUD]:
+    label=Label(text,lambda x=None: text,(x,y),size)
+    info=Label(text+"_info",fun,(x,y-size-10),size)
 
-#obstacle.Body().position=(200,200)
+    return [label,info]
+
+def make_hud():
+
+    labs:list[HUD]=[*make_label("pos:",lambda x=None: vec2d_to_str(rob.getPosition()),0,50),
+                    *make_label("gyro:",lambda x=None: str(rob._gyro.get_angular_velocity()),100,50),
+                    *make_label("accel:",lambda x=None: str(rob._gyro.get_accel()),200,50),
+                    *make_label("front:",lambda x=None: str(rob._front.getDistance()),300,70),
+                    *make_label("floor:",lambda x=None: str(rob._hole.Distance()),300,30)]
+
+    info_b=Board("board",Box(0,100,50,50,color=(255,255,0)),Box(0,0,800,100,color=(255,255,255)),labs)
+
+    scene.add_hud(info_b)
+
+    for l in labs:
+        scene.add_hud(l)
+
+
+make_hud()
 
 rob.setPosition((200,150))
 

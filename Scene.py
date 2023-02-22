@@ -37,16 +37,25 @@ class Scene:
         for obj in self._objects.values():
             if isinstance(obj,EventObject):
                 obj.run_mouse_move(x,y,dx,dy)
+        
+        for hud in self._hud.values():
+            hud.on_mouse_motion(x,y,dx,dy)
 
     def on_mouse_press(self,x, y, button, modifiers):
         for obj in self._objects.values():
             if isinstance(obj,EventObject):
                 obj.run_mouse_press(x,y,button, modifiers)
+        
+        for hud in self._hud.values():
+            hud.on_mouse_press(x,y,button,modifiers)
 
     def on_mouse_release(self,x, y, button, modifiers):
         for obj in self._objects.values():
             if isinstance(obj,EventObject):
                 obj.run_mouse_release(x,y,button, modifiers)
+
+        for hud in self._hud.values():
+            hud.on_mouse_release(x,y,button,modifiers)
 
     def on_mouse_drag(self,x, y, dx, dy, buttons, modifiers):
         for obj in self._objects.values():
@@ -88,7 +97,8 @@ class Scene:
 
         # draw the HUD 
         for hud in self._hud.values():
-            hud.draw(batch)
+            if hud._visible:
+                hud.draw(batch)
 
         batch.draw()
 

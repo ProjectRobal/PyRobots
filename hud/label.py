@@ -3,10 +3,10 @@ from pymunk import Vec2d
 import pyglet
 
 class Label(HUD):
-    def __init__(self,name:str,value,pos:Vec2d):
+    def __init__(self,name:str,value,pos:Vec2d,size:int=16):
         super().__init__(name,value)
         self._pos=pos
-        self._size=36
+        self._size=size
         self._color=(0,0,0,255)
         self._background=(255,255,255,255)
 

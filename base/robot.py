@@ -153,7 +153,3 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
     def run(self):
         server=threading.Thread(target=self._run_server,args=[])
         server.start()
-        
-    def __del__(self):
-        super().__del__()
-        self.server.stop()
