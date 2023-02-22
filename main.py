@@ -22,6 +22,7 @@ from zone.hole import Hole
 from base.hud import HUD
 from hud.label import Label
 from hud.board import Board,Box
+from hud.guage import Gauge,GaugeDesign
 
 import pyaudio
 
@@ -85,13 +86,30 @@ def make_hud():
                     *make_label("gyro:",lambda x=None: str(rob._gyro.get_angular_velocity()),100,50),
                     *make_label("accel:",lambda x=None: str(rob._gyro.get_accel()),200,50),
                     *make_label("front:",lambda x=None: str(rob._front.getDistance()),300,70),
-                    *make_label("floor:",lambda x=None: str(rob._hole.Distance()),300,30)]
+                    *make_label("floor:",lambda x=None: str(rob._hole.Distance()),300,30),
+                    ]
 
-    info_b=Board("board",Box(0,100,50,50,color=(255,255,0)),Box(0,0,800,100,color=(255,255,255)),labs)
+    info_b=Board("board_bottom",Box(0,100,25,25,color=(255,255,0)),Box(0,0,800,100,color=(255,255,255)),labs)
 
     scene.add_hud(info_b)
 
     for l in labs:
+        scene.add_hud(l)
+
+    labs1:list[HUD]=[
+        *make_label("motorA:",lambda x=None: str(rob._m1._power)+" "+str(rob._m1._direction),100,70),
+        *make_label("motorB:",lambda x=None: str(rob._m2._power)+" "+str(rob._m2._direction),100,30),
+        Gauge("servo1",lambda x=None: rob.getServo()[0],250,50,0,180,0,180,design=GaugeDesign(radius=30)),
+        Label("servo1_label","angel",(225,0),10),
+        Gauge("servo2",lambda x=None: rob.getServo()[1],350,50,0,180,0,180,design=GaugeDesign(radius=30)),
+        Label("servo2_label","angel",(325,0),10)
+    ]
+
+    info_a=Board("board_top",Box(0,300,25,25,color=(255,0,255)),Box(0,0,800,100,color=(255,255,255)),labs1)
+
+    scene.add_hud(info_a)
+
+    for l in labs1:
         scene.add_hud(l)
 
 
