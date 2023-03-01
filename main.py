@@ -26,19 +26,11 @@ from hud.guage import Gauge,GaugeDesign
 
 import pyaudio
 
-#To do:
-# Microphone
-# Sound source
-# HUD:
-# Background to label
-# speedometer
-# progress bars
-
 space=pymunk.Space(True)
 '''use 4 threads'''
 space.threads=4
 
-scene=Scene(space)
+scene=Scene(space,remote=True)
 
 wall_up=Rect("wall_up",space,(750,25),(25,575),space.static_body)
 wall_up.Color((255,0,0))
@@ -121,7 +113,7 @@ def make_hud():
 
 make_hud()
 
-rob.setPosition((200,150))
+rob.setPosition((730,150))
 
 rob.run()
 

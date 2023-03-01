@@ -18,6 +18,12 @@ class MicSourceStatic(Object):
 
     SYMBOL_SIZE=10
 
+    def callback(self,in_data, frame_count, time_info, status):
+        
+        self.data=np.fromstring(in_data,dtype=np.int16)
+
+        return (in_data, pyaudio.paContinue)
+
     '''Audio source from microphone
     recivers - a microphones that will recive audio data
     damping - a dumping force applied to audio signal
@@ -28,16 +34,18 @@ class MicSourceStatic(Object):
         self._recivers=recivers
         self._damping=damping
         self.m_pos=pymunk.Vec2d(x,y)
+        self.data=np.zeros(CHUNK,np.int16)
 
         # audio source
 
         self.audio=pyaudio.PyAudio()
 
-        self.source=self.audio.open(RATE,CHANNELS,pyaudio.paInt16,input=True,frames_per_buffer=CHUNK,input_device_index=3)
+        self.source=self.audio.open(RATE,CHANNELS,pyaudio.paInt16,input=True,frames_per_buffer=CHUNK,input_device_index=3
+                                    ,stream_callback=self.callback)
 
     def Loop(self,dt):
 
-        data=np.fromstring(self.source.read(CHUNK),dtype=np.int16)
+        
 
         for rec in self._recivers:
             if isinstance(rec,Microphone):
@@ -47,7 +55,7 @@ class MicSourceStatic(Object):
 
                 output=np.array([],dtype=np.int32)
 
-                for d in data:
+                for d in self.data:
                     output=np.append(output,int(d*math.exp(-self._damping*float(distance))))
 
                 input=rec.Buffer()
