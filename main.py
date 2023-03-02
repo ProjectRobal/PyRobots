@@ -26,11 +26,13 @@ from hud.guage import Gauge,GaugeDesign
 
 import pyaudio
 
+from config import PIXEL_TO_MM
+
 space=pymunk.Space(True)
 '''use 4 threads'''
 space.threads=4
 
-scene=Scene(space,remote=True)
+scene=Scene(space,remote=False)
 
 wall_up=Rect("wall_up",space,(750,25),(25,575),space.static_body)
 wall_up.Color((255,0,0))
@@ -64,7 +66,7 @@ rob=Robot(scene,(0,0))
 #HUD:
 
 def vec2d_to_str(vec:pymunk.Vec2d)->str:
-    return str(vec.x)+","+str(vec.y)
+    return str(round(vec.x*PIXEL_TO_MM/10,2))+"cm,"+str(round(vec.y*PIXEL_TO_MM/10,2))+"cm"
 
 def make_label(text:str,fun:callable,x,y,size=10)->list[HUD]:
     label=Label(text,text,(x,y),size)
@@ -113,7 +115,7 @@ def make_hud():
 
 make_hud()
 
-rob.setPosition((730,150))
+rob.setPosition((745,150))
 
 rob.run()
 

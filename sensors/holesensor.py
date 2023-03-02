@@ -11,7 +11,7 @@ class HoleSensor(Sensor):
         self._touch=False
         self.color=(255,0,0)
         self._id=id
-        self._distance=10
+        self._distance=35
 
     def visualize(self, batch):
         self.point=shapes.Circle(self._start[0],self._start[1],5,color=self.color,batch=batch)        
@@ -38,6 +38,6 @@ class HoleSensor(Sensor):
                     return
                 break
         
-        self._distance=10
+        self._distance=35
         self.color=(255,0,0)
         

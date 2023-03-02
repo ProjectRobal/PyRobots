@@ -63,6 +63,8 @@ class Scene:
             if isinstance(obj,EventObject):
                 obj.run_mouse_drag(x,y,dx,dy,buttons,modifiers)
     
+    def on_close(self):
+        exit()
 
     def init_events(self):
         window=self._window
@@ -73,6 +75,7 @@ class Scene:
         window.on_mouse_release=self.on_mouse_release
         window.on_mouse_drag=self.on_mouse_drag
         window.on_draw=self.on_draw
+        #window.on_close=self.on_close
 
     def main_loop(self,dt):
         for obj in self._objects.values():

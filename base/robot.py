@@ -25,20 +25,20 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
     def __init__(self,scene:Scene,position=(0,0)):
         self._scene = scene
-        self._base = Rect("base",scene.Space(),(50,50),(-25,-25),pymunk.Body(10,1))
+        self._base = Rect("base",scene.Space(),(58,50),(-29,-25),pymunk.Body(10,1))
         self._base.Color((231, 255, 13,255))
         self._base.Shape().filter=pymunk.ShapeFilter(group=1)
 
         self._servo=[0,0]
         #self._base.Shape().collision_type=2
 
-        self._motor1=Rect("motor1",scene.Space(),(50,15),(-25,25),self._base.Body())
-        self._motor2=Rect("motor2",scene.Space(),(50,15),(-25,-40),self._base.Body())
+        self._motor1=Rect("motor1",scene.Space(),(58,15),(-29,25),self._base.Body())
+        self._motor2=Rect("motor2",scene.Space(),(58,15),(-29,-40),self._base.Body())
         self._motor1.Shape().collision_type=2
         self._motor2.Shape().collision_type=2
 
-        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(-25.0,50.0),100,50)
-        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(25.0,-50.0),100,50)
+        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(-29.0,50.0),100,50)
+        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(29.0,-50.0),100,50)
 
         self._hole=HoleSensor("floor",scene.Space(),self._base,(50,0))
 
@@ -46,7 +46,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         self._gyro=Gyro("gyro",scene.Space(),self._base)
 
-        # a list of microphones
+        # a list of microphones ( audio recivers )
         self._microphones=[
             Microphone("mic1",scene.Space(),self._base,(20,25)),
             Microphone("mic2",scene.Space(),self._base,(20,-25))
@@ -73,8 +73,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             micro.Show(True)
             scene.add_sensor(micro)
             
-        self._m1.set_power(100)
-        self._m2.set_power(100)
+        self._m1.set_power(0)
+        self._m2.set_power(0)
 
         self.setPosition(position)
 
@@ -155,3 +155,6 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
     def run(self):
         server=threading.Thread(target=self._run_server,args=[])
         server.start()
+
+    def __del__(self):
+        self.server.stop()

@@ -6,6 +6,7 @@ import math
 
 import pyglet
 from pyglet import shapes
+from config import PIXEL_TO_MM
 
 
 class Laser(Sensor):
@@ -48,7 +49,7 @@ class Laser(Sensor):
         for i in info:
             if i.shape is not None:
                 #print(i.shape)
-                self._mesaurment=int(i.alpha*self._distance)
+                self._mesaurment=int(i.alpha*self._distance*PIXEL_TO_MM)
                 self.end=i.point
                 #print(self._mesaurment)
                 break
