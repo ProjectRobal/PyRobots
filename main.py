@@ -120,3 +120,5 @@ rob.setPosition((745,150))
 rob.run()
 
 scene.run()
+
+rob.stop()
