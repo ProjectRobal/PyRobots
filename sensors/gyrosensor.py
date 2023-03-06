@@ -14,6 +14,7 @@ GYRO_RANGE=float(2**16 -1)
 
 class Gyro(Sensor):
     '''pos a position of the gyroscope respect to the obj ( a tuple (x,y))''' 
+    '''Now it will pass information about change of rotations and change of movement'''
     def __init__(self,name,scene,obj):
         super().__init__(name,scene,obj)
         self._acceleration=np.array([0,0,0],dtype=np.int32)
@@ -23,10 +24,10 @@ class Gyro(Sensor):
         self._dt=0
 
     def get_accel(self):
-        return self._acceleration
+        return self._acceleration*PIXEL_TO_MM
 
     def get_angular_velocity(self):
-        return self._angular_velocity
+        return self._angular_velocity*PIXEL_TO_MM
 
     def pre_solve(self,dt):
         self._velocity1 = self._obj.Body().velocity*PIXEL_TO_MM
@@ -40,8 +41,8 @@ class Gyro(Sensor):
         dv=self._velocity2-self._velocity1
         #print(dv)
         #print(dt)
-        self._acceleration=np.array((0,dv[0]*GYRO_RANGE/(16*G*self._dt) ,dv[1]*GYRO_RANGE/(16*G*self._dt)),dtype=np.int32)
-        self._angular_velocity=np.array([0,0,(self._obj.Body().angular_velocity*PIXEL_TO_MM)*ACCEL_RANGE/GYRO_DIM],dtype=np.int32)
+        self._acceleration=np.array((0,self._velocity2[0]*dt ,self._velocity2[1]*dt),dtype=np.int32)
+        self._angular_velocity=np.array([0,0,self._obj.Body().angular_velocity*dt],dtype=np.int32)
         #print(self._acceleration)
         #print(self._angular_velocity)
 

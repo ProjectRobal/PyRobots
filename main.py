@@ -32,7 +32,7 @@ space=pymunk.Space(True)
 '''use 4 threads'''
 space.threads=4
 
-scene=Scene(space,remote=False)
+scene=Scene(space,remote=True)
 
 wall_up=Rect("wall_up",space,(750,25),(25,575),space.static_body)
 wall_up.Color((255,0,0))
@@ -77,8 +77,8 @@ def make_label(text:str,fun:callable,x,y,size=10)->list[HUD]:
 def make_hud():
 
     labs:list[HUD]=[*make_label("pos:",lambda x=None: vec2d_to_str(rob.getPosition()),100,50),
-                    *make_label("gyro:",lambda x=None: str(rob._gyro.get_angular_velocity()),250,75),
-                    *make_label("accel:",lambda x=None: str(rob._gyro.get_accel()),250,25),
+                    *make_label("rotation:",lambda x=None: str(rob._gyro.get_angular_velocity()),250,75),
+                    *make_label("movement:",lambda x=None: str(rob._gyro.get_accel()),250,25),
                     *make_label("front:",lambda x=None: str(rob._front.getDistance())+" mm",400,70),
                     *make_label("floor:",lambda x=None: str(rob._hole.Distance())+" mm",400,30),
                     ]
@@ -115,7 +115,7 @@ def make_hud():
 
 make_hud()
 
-rob.setPosition((745,150))
+rob.setPosition((700,150))
 
 rob.run()
 
