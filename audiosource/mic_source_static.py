@@ -14,6 +14,8 @@ CHUNK=32000
 RATE=16000
 CHANNELS=1
 
+SAMPLE=16
+
 class MicSourceStatic(Object):
 
     SYMBOL_SIZE=10
@@ -40,12 +42,15 @@ class MicSourceStatic(Object):
 
         self.audio=pyaudio.PyAudio()
 
-        self.source=self.audio.open(RATE,CHANNELS,pyaudio.paInt16,input=True,frames_per_buffer=CHUNK,input_device_index=3
-                                    ,stream_callback=self.callback)
+        self.source=self.audio.open(RATE,CHANNELS,pyaudio.paInt16,input=True,frames_per_buffer=CHUNK,input_device_index=3)
 
     def Loop(self,dt):
 
-        
+        readed=np.fromstring(self.source.read(SAMPLE),dtype=np.int16)
+
+        self.data=np.roll(self.data,-SAMPLE)
+
+        self.data[-SAMPLE:]=readed
 
         for rec in self._recivers:
             if isinstance(rec,Microphone):
@@ -53,14 +58,10 @@ class MicSourceStatic(Object):
 
                 distance=abs(_pos-self.m_pos)
 
-                output=np.array([],dtype=np.int32)
+                for d in self.data[-SAMPLE:]:
+                    d=int(d*math.exp(-self._damping*float(distance)))
 
-                for d in self.data:
-                    output=np.append(output,int(d*math.exp(-self._damping*float(distance))))
-
-                input=rec.Buffer()
-
-                rec.Buffer(np.add(output,input,dtype=np.int32))
+                rec.Buffer(self.data)
 
     def draw(self,batch):
         self._mic=pyglet.shapes.Triangle(self.m_pos.x-self.SYMBOL_SIZE,self.m_pos.y-self.SYMBOL_SIZE,self.m_pos.x+self.SYMBOL_SIZE,self.m_pos.y-self.SYMBOL_SIZE,

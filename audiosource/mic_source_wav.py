@@ -32,6 +32,8 @@ class MicSourceWAV(Object):
 
         self.source=wave.open(filename,"rb")
 
+        self.data=np.zeros(CHUNK,np.int16)
+
         # audio source
 
         #self.audio=pyaudio.PyAudio()
@@ -40,9 +42,13 @@ class MicSourceWAV(Object):
 
     def Loop(self,dt):
 
-        data=np.fromstring(self.source.readframes(CHUNK),dtype=np.int16)
+        readed=np.fromstring(self.source.readframes(16),dtype=np.int16)
 
-        if data.size==0:
+        self.data=np.roll(self.data,-16)
+
+        self.data[-16:]=readed
+
+        if readed.size==0:
             self.source.rewind()
             return
 
@@ -52,14 +58,10 @@ class MicSourceWAV(Object):
 
                 distance=abs(_pos-self.m_pos)
 
-                output=np.array([],dtype=np.int32)
+                for d in self.data[-16:]:
+                    d=int(d*math.exp(-self._damping*float(distance)))
 
-                for d in data:
-                    output=np.append(output,int(d*math.exp(-self._damping*float(distance))))
-
-                input=rec.Buffer()
-
-                rec.Buffer(np.add(input,output,np.int32))
+                rec.Buffer(self.data)
 
     def draw(self,batch):
         self._mic=pyglet.shapes.Triangle(self.m_pos.x-self.SYMBOL_SIZE,self.m_pos.y-self.SYMBOL_SIZE,self.m_pos.x+self.SYMBOL_SIZE,self.m_pos.y-self.SYMBOL_SIZE,

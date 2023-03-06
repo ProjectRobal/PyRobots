@@ -44,14 +44,10 @@ class MicSource(EventObject):
 
                     distance=abs(_pos-m_pos)
 
-                    output=np.array([],dtype=np.int32)
-
                     for d in data:
-                        output=np.append(output,int(d*math.exp(-self._damping*float(distance))))
+                        d=int(d*math.exp(-self._damping*float(distance)))
 
-                    input=rec.Buffer()
-
-                    rec.Buffer(np.add(input,output,np.int32))
+                    rec.Buffer(data)
 
                     
 
