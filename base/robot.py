@@ -121,6 +121,9 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         left.data[:]=np.array(self._microphones[0].Buffer(),dtype=np.int32)
         right.data[:]=np.array(self._microphones[1].Buffer(),dtype=np.int32)
+
+        print(left.data[-52:])
+        print(right.data[-52:])
         
 
         msg=Message(front=front,floor=floor,
