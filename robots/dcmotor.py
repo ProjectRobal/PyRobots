@@ -7,11 +7,12 @@ import math
 class DCMotor(Object):
 
     '''torque - a max engine torque, vmax - max engine speed, body - target body, origin - a point where to apply force'''
-    def __init__(self,name,scene,body,origin,torque,vmax):
+    def __init__(self,name,scene,body,origin,torque,max_power,vmax):
         super().__init__(name,scene)
         self._torque = torque
         self._vmax = vmax
         self._power=0 #0-100
+        self._max_power=max_power
         self._body=body
         self._origin = origin
         self._k=2.0
@@ -40,7 +41,12 @@ class DCMotor(Object):
 
         vel=abs(self.Body().velocity)/self._k
 
-        force=(self._torque*math.exp(-vel)*(self._power/100.0))*self._direction
+        #force=(self._torque*math.exp(-vel)*(self._power/100.0))*self._direction
+
+        if vel!=0:
+            force=((self._power/100.0)*self._max_power/vel)*self._direction
+        else:
+            force=self._torque*self._direction
         
         force_vec=(force*math.cos(self.Body().angle),force*math.sin(self.Body().angle))
 

@@ -37,8 +37,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self._motor1.Shape().collision_type=2
         self._motor2.Shape().collision_type=2
 
-        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(-29.0,50.0),100,50)
-        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(29.0,-50.0),100,50)
+        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(-29.0,50.0),100,24,50)
+        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(29.0,-50.0),100,24,50)
 
         self._hole=HoleSensor("floor",scene.Space(),self._base,(50,0))
 
@@ -122,8 +122,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         left.data[:]=np.array(self._microphones[0].Buffer(),dtype=np.int32)
         right.data[:]=np.array(self._microphones[1].Buffer(),dtype=np.int32)
 
-        print(left.data[-52:])
-        print(right.data[-52:])
+        #print(left.data[-52:])
+        #print(right.data[-52:])
         
 
         msg=Message(front=front,floor=floor,
