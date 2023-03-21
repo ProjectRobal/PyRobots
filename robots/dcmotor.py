@@ -43,10 +43,7 @@ class DCMotor(Object):
 
         #force=(self._torque*math.exp(-vel)*(self._power/100.0))*self._direction
 
-        if vel!=0:
-            force=((self._power/100.0)*self._max_power/vel)*self._direction
-        else:
-            force=self._torque*self._direction
+        force=self._torque-((self._power/100.0)*self._max_power/vel)*self._direction
         
         force_vec=(force*math.cos(self.Body().angle),force*math.sin(self.Body().angle))
 
