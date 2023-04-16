@@ -6,6 +6,7 @@ from sensors.holesensor import HoleSensor
 from sensors.microphone import Microphone
 from audiosource.mic_source import MicSource
 from audiosource.mic_source_static import MicSourceStatic
+from audiosource.mic_source_noise import MicSourceNoise
 
 from concurrent import futures
 import grpc
@@ -53,7 +54,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         ]
 
         #self._a_source=MicSource("mic",scene.Space(),self._microphones,1.0)
-        self._a_source=MicSourceStatic("mic",scene.Space(),600,500,self._microphones,0.001)
+        #self._a_source=MicSourceStatic("mic",scene.Space(),600,500,self._microphones,0.001)
+        self._a_source=MicSourceNoise("mic",scene.Space(),600,500,self._microphones,0.001)
 
         self._front.Show(True)
         self._hole.Show(True)
