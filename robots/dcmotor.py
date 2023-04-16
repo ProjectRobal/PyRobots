@@ -11,6 +11,7 @@ class DCMotor(Object):
         super().__init__(name,scene)
         self._torque = torque
         self._vmax = vmax
+        self._a=self._torque/self._vmax
         self._power=0 #0-100
         self._max_power=max_power
         self._body=body
@@ -41,9 +42,7 @@ class DCMotor(Object):
 
         vel=abs(self.Body().velocity)/self._k
 
-        #force=(self._torque*math.exp(-vel)*(self._power/100.0))*self._direction
-
-        force=self._torque-((self._power/100.0)*self._max_power/vel)*self._direction
+        force=(self._power/100.0)*(self._torque-(self._a*vel))*self._direction
         
         force_vec=(force*math.cos(self.Body().angle),force*math.sin(self.Body().angle))
 
