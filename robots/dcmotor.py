@@ -42,7 +42,7 @@ class DCMotor(Object):
 
         vel=abs(self.Body().velocity)/self._k
 
-        force=(self._power/100.0)*(self._torque-(self._a*vel))*self._direction
+        force=((self._torque-(self._a*vel))*self._direction)*(self._power/100)
         
         force_vec=(force*math.cos(self.Body().angle),force*math.sin(self.Body().angle))
 

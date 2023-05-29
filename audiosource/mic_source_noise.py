@@ -40,7 +40,7 @@ class MicSourceNoise(Object):
 
     def Loop(self,dt):
 
-        readed=np.random.normal(0,0.1,16)
+        readed=np.random.normal(0,1,16)
 
         self.data=np.roll(self.data,-16)
 
