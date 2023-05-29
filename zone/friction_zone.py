@@ -2,6 +2,7 @@ from base.object import Object
 
 import pymunk
 from pyglet import shapes
+import math
 
 import utils
 
@@ -44,23 +45,36 @@ class FrictionZone(Object):
         
         velocity:pymunk.Vec2d=on_floor.body.velocity
 
-        if abs(velocity) <= 0:
-            return True
-
-        #print(abs(velocity))
 
         mass=on_floor.body.mass
 
         friction=mass*10*self._friction
 
+        if on_floor.body.angular_velocity>0:
+            rotarty_f=friction*2000
+
+            if abs(on_floor.body.angular_velocity)-abs(rotarty_f*STEP_TIME)<=0:
+                on_floor.body.angular_velocity=0
+            else:
+                on_floor.body.apply_force_at_local_point((rotarty_f*pymunk.Vec2d(-on_floor.body.angular_velocity/abs(on_floor.body.angular_velocity),0))+pymunk.Vec2d(0,
+                                                                                                                                                                 
+                                                                                                                                                                1))
+
+        if abs(velocity) <= 0:
+            return True
+
+        #print(abs(velocity))
+
         f_force=friction*(-velocity.normalized())
 
-        if abs(velocity)-abs(f_force*STEP_TIME)<=0:
+        #print(on_floor.body.angular_velocity)
+
+        if abs(velocity)-abs(f_force)*STEP_TIME<=0:
             on_floor.body.velocity=(0,0)
-            #print("Not moving")
             return True
 
         on_floor.body.apply_force_at_local_point(f_force)
+
 
         return True
         

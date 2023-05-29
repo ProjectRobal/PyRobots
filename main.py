@@ -32,7 +32,7 @@ space=pymunk.Space(True)
 '''use 4 threads'''
 space.threads=4
 
-scene=Scene(space,remote=True)
+scene=Scene(space,remote=False)
 
 wall_up=Rect("wall_up",space,(750,25),(25,575),space.static_body)
 wall_up.Color((255,0,0))
@@ -115,7 +115,7 @@ def make_hud():
 
 make_hud()
 
-rob.setPosition((700,150))
+rob.setPosition((600,450))
 
 rob.run()
 
