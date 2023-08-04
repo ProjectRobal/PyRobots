@@ -39,8 +39,9 @@ class DCMotor(Object):
 
 
     def Loop(self,dt):
+        # it should also depends on angular velocity
 
-        vel=abs(self.Body().velocity)/self._k
+        vel=abs(self.Body().velocity + self.Body().angular_velocity*pymunk.Vec2d.rotated(self._origin,self.Body().angle))/self._k
 
         force=((self._torque-(self._a*vel))*self._direction)*(self._power/100.0)
         

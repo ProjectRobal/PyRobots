@@ -52,7 +52,7 @@ class FrictionZone(Object):
 
         friction=mass*10*self._friction
 
-        anti_torque=friction*radius*2
+        anti_torque=friction*radius
 
         if abs(on_floor.body.force) <= friction:
             on_floor.body.force-=on_floor.body.force

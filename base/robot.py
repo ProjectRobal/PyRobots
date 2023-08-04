@@ -76,7 +76,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             scene.add_sensor(micro)
             
         self._m1.set_power(100)
-        self._m2.set_power(0)
+        self._m2.set_power(70)
+        self._m1.set_direction(0)
 
         self.setPosition(position)
 
