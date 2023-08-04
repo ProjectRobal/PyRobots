@@ -15,7 +15,7 @@ class DCMotor(Object):
         self._power=0 #0-100
         self._max_power=max_power
         self._body=body
-        self._origin = origin
+        self._origin = pymunk.Vec2d(*origin)
         self._k=2.0
         self._direction=1
 
@@ -42,15 +42,11 @@ class DCMotor(Object):
 
         vel=abs(self.Body().velocity)/self._k
 
-        force=((self._torque-(self._a*vel))*self._direction)*(self._power/100)
+        force=((self._torque-(self._a*vel))*self._direction)*(self._power/100.0)
         
         force_vec=(force*math.cos(self.Body().angle),force*math.sin(self.Body().angle))
 
-        self.Body().apply_force_at_local_point(force_vec,
-        ( self._origin[0]*math.cos(self.Body().angle)-self._origin[1]*math.sin(self.Body().angle)
-        ,
-        self._origin[1]*math.cos(self.Body().angle)+self._origin[0]*math.sin(self.Body().angle)
-        ))
+        self.Body().apply_force_at_local_point(force_vec,pymunk.Vec2d.rotated(self._origin,self.Body().angle))
       
     def Body(self):
         return self._body
