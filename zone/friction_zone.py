@@ -45,44 +45,28 @@ class FrictionZone(Object):
         
         velocity:pymunk.Vec2d=on_floor.body.velocity
 
-
         mass=on_floor.body.mass
+        area=on_floor.area
+
+        radius=math.sqrt(area/math.pi)
 
         friction=mass*10*self._friction
 
-        if abs(on_floor.body.angular_velocity)>0:
+        anti_torque=friction*radius
 
-            area=on_floor.area
-
-            radius=math.sqrt(area/math.pi)
-
-            anti_torque=friction*radius
-
-            if abs(on_floor.body.angular_velocity)-abs(anti_torque*STEP_TIME/mass)<=0:
-                on_floor.body.angular_velocity=0
-            else:
-                on_floor.body.apply_force_at_local_point(force=pymunk.Vec2d((-on_floor.body.angular_velocity/abs(on_floor.body.angular_velocity))*anti_torque/radius,0),point=pymunk.Vec2d(0,radius))
-        
-        print(on_floor.body.angular_velocity)
-
-        if abs(velocity) <= 0:
+        if abs(on_floor.body.force) <= friction:
+            on_floor.body.force-=on_floor.body.force
             return True
+        else:
+            on_floor.body.force-=friction*on_floor.body.force.normalized()
 
-        #print(velocity)
-
-        f_force=friction*(-velocity.normalized())
-
-        #print(on_floor.body.angular_velocity)
-
-        if abs(velocity)-abs(f_force/mass)*STEP_TIME<=0:
-            on_floor.body.velocity=(0,0)
-            return True
+        if abs(on_floor.body.torque)<=anti_torque:
+            on_floor.body.torque-=on_floor.body.torque
+        else:
+            on_floor.body.torque-=anti_torque*(on_floor.body.torque/abs(on_floor.body.torque))
         
-        center=on_floor.bb.center()
-
-        on_floor.body.apply_force_at_world_point(f_force,center)
-
-
+        print(on_floor.body.torque)
+        
         return True
         
 
