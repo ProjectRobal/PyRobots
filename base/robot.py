@@ -26,7 +26,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
     def __init__(self,scene:Scene,position=(0,0)):
         self._scene = scene
-        self._base = Rect("base",scene.Space(),(58,50),(-29,-25),pymunk.Body(20,400))
+        self._base = Rect("base",scene.Space(),(58,50),(-29,-25),pymunk.Body(30,400))
         self._base.Color((231, 255, 13,255))
         self._base.Shape().filter=pymunk.ShapeFilter(group=1)
 
@@ -76,7 +76,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             scene.add_sensor(micro)
             
         self._m1.set_power(100)
-        self._m2.set_power(70)
+        self._m2.set_power(0)
 
         self.setPosition(position)
 
