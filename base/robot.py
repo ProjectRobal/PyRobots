@@ -38,8 +38,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self._motor1.Shape().collision_type=2
         self._motor2.Shape().collision_type=2
 
-        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(-29.0,50.0),100,25,20)
-        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(29.0,-50.0),100,25,20)
+        self._m1=DCMotor("m1",scene.Space(),self._base.Body(),(29.0,50.0),50,25,20)
+        self._m2=DCMotor("m2",scene.Space(),self._base.Body(),(29.0,-50.0),50,25,20)
 
         self._hole=HoleSensor("floor",scene.Space(),self._base,(50,0))
 
@@ -76,7 +76,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             scene.add_sensor(micro)
             
         self._m1.set_power(50)
-        self._m2.set_power(60)
+        self._m2.set_power(50)
 
         self.setPosition(position)
 

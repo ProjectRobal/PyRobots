@@ -51,14 +51,19 @@ class FrictionZone(Object):
         friction=mass*10*self._friction
 
         if on_floor.body.angular_velocity>0:
-            rotarty_f=friction*2000
 
-            if abs(on_floor.body.angular_velocity)-abs(rotarty_f*STEP_TIME)<=0:
+            area=on_floor.area
+
+            radius=math.sqrt(area/math.pi)
+
+            anti_torque=friction*radius*10000
+
+            if abs(on_floor.body.angular_velocity)-abs(anti_torque*STEP_TIME/mass)<=0:
                 on_floor.body.angular_velocity=0
             else:
-                on_floor.body.apply_force_at_local_point((rotarty_f*pymunk.Vec2d(-on_floor.body.angular_velocity/abs(on_floor.body.angular_velocity),0))+pymunk.Vec2d(0,
-                                                                                                                                                                 
-                                                                                                                                                                1))
+                on_floor.body.apply_force_at_local_point(force=pymunk.Vec2d((-on_floor.body.angular_velocity/abs(on_floor.body.angular_velocity))*anti_torque/radius,0),point=pymunk.Vec2d(0,radius))
+        
+        print(on_floor.body.angular_velocity)
 
         if abs(velocity) <= 0:
             return True
@@ -69,7 +74,7 @@ class FrictionZone(Object):
 
         #print(on_floor.body.angular_velocity)
 
-        if abs(velocity)-abs(f_force)*STEP_TIME<=0:
+        if abs(velocity)-abs(f_force/mass)*STEP_TIME<=0:
             on_floor.body.velocity=(0,0)
             return True
 
