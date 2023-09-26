@@ -62,8 +62,6 @@ class FrictionZone(Object):
             else:
                 on_floor.body.force-=friction*on_floor.body.velocity.normalized()
 
-        print(abs(on_floor.body.angular_velocity)>0)
-
         if abs(on_floor.body.torque)<=anti_torque:
             on_floor.body.torque-=on_floor.body.torque
         if abs(on_floor.body.angular_velocity)>0:
@@ -72,8 +70,6 @@ class FrictionZone(Object):
             else:
                 on_floor.body.torque-=anti_torque*(on_floor.body.angular_velocity/abs(on_floor.body.angular_velocity))
         
-        print(abs(on_floor.body.angular_velocity))
-
         return True
         
 

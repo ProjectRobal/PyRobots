@@ -79,7 +79,8 @@ def make_hud():
     labs:list[HUD]=[*make_label("pos:",lambda x=None: vec2d_to_str(rob.getPosition()),100,50),
                     *make_label("rotation:",lambda x=None: str(rob._gyro.get_angular_velocity()),250,75),
                     *make_label("movement:",lambda x=None: str(rob._gyro.get_accel()),250,25),
-                    *make_label("front:",lambda x=None: str(rob._front.getDistance())+" mm",400,70),
+                    *make_label("front_right:",lambda x=None: str(rob._front1.getDistance())+" mm",400,70),
+                    *make_label("front_left:",lambda x=None: str(rob._front2.getDistance())+" mm",600,70),
                     *make_label("floor:",lambda x=None: str(rob._hole.Distance())+" mm",400,30),
                     ]
 

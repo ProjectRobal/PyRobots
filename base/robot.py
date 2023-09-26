@@ -43,21 +43,23 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         self._hole=HoleSensor("floor",scene.Space(),self._base,(50,0))
 
-        self._front=Laser("front",scene.Space(),self._base,(26,0),(1,0),100,1)
+        self._front1=Laser("front_left",scene.Space(),self._base,(26,12),(1,0),100,1)
+        self._front2=Laser("front_right",scene.Space(),self._base,(26,-12),(1,0),100,1)
 
         self._gyro=Gyro("gyro",scene.Space(),self._base)
 
         # a list of microphones ( audio recivers )
         self._microphones=[
-            Microphone("mic1",scene.Space(),self._base,(20,25)),
-            Microphone("mic2",scene.Space(),self._base,(20,-25))
+            Microphone("mic1",scene.Space(),self._base,(28,12)),
+            Microphone("mic2",scene.Space(),self._base,(28,-12))
         ]
 
         #self._a_source=MicSource("mic",scene.Space(),self._microphones,1.0)
         #self._a_source=MicSourceStatic("mic",scene.Space(),600,500,self._microphones,0.001)
         self._a_source=MicSourceNoise("mic",scene.Space(),600,500,self._microphones,0.01)
 
-        self._front.Show(True)
+        self._front1.Show(True)
+        self._front2.Show(True)
         self._hole.Show(True)
         
         scene.add_object(self._base)
@@ -67,7 +69,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         scene.add_object(self._m2)
         scene.add_object(self._a_source)
 
-        scene.add_sensor(self._front)
+        scene.add_sensor(self._front1)
+        scene.add_sensor(self._front2)
         scene.add_sensor(self._hole)
         scene.add_sensor(self._gyro)
 
@@ -75,9 +78,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             micro.Show(True)
             scene.add_sensor(micro)
             
-        self._m1.set_power(100)
-        self._m2.set_power(70)
-        self._m1.set_direction(0)
+        self._m1.set_power(0)
+        self._m2.set_power(0)
 
         self.setPosition(position)
 
@@ -116,7 +118,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         gyro.accel_range=16
         gyro.gyro_range=2000
 
-        front=DistanceSensor(distance=self._front.getDistance())
+        front=DistanceSensor(distance=self._front1.getDistance())
         floor=DistanceSensor(distance=self._hole.Distance())
 
         left=AudioChunk()
