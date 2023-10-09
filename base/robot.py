@@ -17,10 +17,19 @@ from shapes.rect import Rect
 
 from Scene import Scene
 
+from . import kcn
+
 import pymunk
 import threading
 import numpy as np
 from config import *
+
+
+from scipy import signal
+import numpy as np
+import cv2
+
+SAMPLE_RATE=16000
 
 class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
@@ -109,6 +118,45 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self._m1.set_direction(params.mA.direction)
         self._m2.set_direction(params.mB.direction)
 
+    def PackageMSG(self):
+
+        buffer:np.ndarray=[1035]
+
+        left:np.ndarray=self._microphones[0].Buffer()
+        right:np.ndarray=self._microphones[1].Buffer()
+
+        audio:np.ndarray=np.sum(left,right)/2.0
+
+        coff:np.ndarray=np.ndarray(2,dtype=np.float64)
+
+        coff[0]=np.max(left)/np.max(audio)
+        coff[1]=np.max(right)/np.max(audio)
+
+        accel:np.ndarray=self._gyro.get_accel()/16.0
+        gyroscope:np.ndarray=self._gyro.get_angular_velocity()/2000.0
+        
+        front:float=self._front1.getDistance()/8160.0
+        front1:float=self._front2.getDistance()/8160.0
+
+        floor:float=self._hole.Distance()/8160.0
+
+        spectogram:np.ndarray=signal.spectrogram(audio,SAMPLE_RATE)
+
+        spectogram=cv2.resize(spectogram,(32,32)).resize(1024)
+
+        buffer[:1023]=spectogram[:]
+
+        buffer[1024:1027]=accel[:]
+        buffer[1028:1031]=gyroscope[:]
+
+        buffer[1032]=coff[0]
+        buffer[1033]=coff[1]
+        buffer[1034]=front
+        buffer[1035]=front1
+        buffer[1036]=floor
+
+        return buffer
+
     def PackageData(self):
         
         gyro=Gyroscope()
@@ -119,6 +167,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         gyro.gyro_range=2000
 
         front=DistanceSensor(distance=self._front1.getDistance())
+        front1=DistanceSensor(distance=self._front2.getDistance())
         floor=DistanceSensor(distance=self._hole.Distance())
 
         left=AudioChunk()
@@ -131,7 +180,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         #print(right.data[-52:])
         
 
-        msg=Message(front=front,floor=floor,
+        msg=Message(front=front,front1=front1,floor=floor,
         left=left,right=right,gyroscope=gyro,status=0,message="")
 
         return msg
@@ -149,6 +198,16 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self.UpdateParams(request)
 
         return _None()
+    
+    def _run_model(self):
+        mind=kcn.Mind()
+
+        while True:
+            time_step:float=mind.step(self.PackageMSG())
+
+            print("Timestap: ",time_step)
+
+            self._scene.update(time_step)
 
     def _run_server(self):
         self.server= grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -159,6 +218,10 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self.server.add_insecure_port('127.0.0.1:5051')
         self.server.start()
         self.server.wait_for_termination()
+
+    def run_local(self):
+        server=threading.Thread(target=self._run_model,args=[])
+        server.start()
 
     def run(self):
         server=threading.Thread(target=self._run_server,args=[])

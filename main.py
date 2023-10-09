@@ -118,7 +118,8 @@ make_hud()
 
 rob.setPosition((600,450))
 
-rob.run()
+#rob.run()
+rob.run_local()
 
 scene.run()
 
