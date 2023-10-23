@@ -13,7 +13,7 @@ class Laser(Sensor):
     '''pos - position of the sensor relative to the body, direction a wersor that point the direction of where the sensor is pointing, distance max sensor distance, radius of the sensor''' 
     def __init__(self,name,space,obj,pos,direction,distance,radius):
         super().__init__(name,space,obj)
-        self._distance = distance
+        self._distance = distance/PIXEL_TO_MM
         self._pos = Vec2d(pos[0],pos[1])
         self._direction = Vec2d(direction[0],direction[1])
         self._radius = radius
@@ -25,10 +25,7 @@ class Laser(Sensor):
         self.line=shapes.Line(self.start[0],self.start[1],self.end[0],self.end[1],color=(255,0,0),batch=batch)
 
     def getDistance(self)->int:
-        if self._mesaurment>=8160:
-            return self._mesaurment
-        
-        return self._mesaurment*10
+        return self._mesaurment
 
     def pre_solve(self,dt):
         pass
@@ -49,7 +46,7 @@ class Laser(Sensor):
         for i in info:
             if i.shape is not None:
                 #print(i.shape)
-                self._mesaurment=int(i.alpha*self._distance*PIXEL_TO_MM)
+                self._mesaurment=int(i.alpha*self._distance)
                 self.end=i.point
                 #print(self._mesaurment)
                 break

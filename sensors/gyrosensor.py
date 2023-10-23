@@ -28,6 +28,9 @@ class Gyro(Sensor):
 
     def get_angular_velocity(self):
         return self._angular_velocity*PIXEL_TO_MM
+    
+    def get_rotation(self):
+        return [0,0,np.round(self._obj.Body().angle,1)]
 
     def pre_solve(self,dt):
         self._velocity1 = self._obj.Body().velocity*PIXEL_TO_MM
@@ -38,10 +41,11 @@ class Gyro(Sensor):
         self._dt+=dt
         if self._dt==0:
             return
-        dv=self._velocity2-self._velocity1
+        dv=(self._velocity2-self._velocity1)/1000.0
         #print(dv)
         #print(dt)
-        self._acceleration=np.array((0,self._velocity2[0]*dt ,self._velocity2[1]*dt),dtype=np.int32)
+        #self._acceleration=np.array((0,self._velocity2[0]*dt ,self._velocity2[1]*dt),dtype=np.int32)
+        self._acceleration=np.array((0,(dv[0]/self._dt)*32767/2 ,(dv[1]/self._dt)*32767/2),dtype=np.int32)
         self._angular_velocity=np.array([0,0,self._obj.Body().angular_velocity*dt],dtype=np.int32)
         #print(self._acceleration)
         #print(self._angular_velocity)
