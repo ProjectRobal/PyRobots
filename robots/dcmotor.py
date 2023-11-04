@@ -1,6 +1,7 @@
 from base.object import Object
 import pymunk
 import math
+import numpy as np
 
 '''A class for dc motor simulation'''
 
@@ -41,13 +42,22 @@ class DCMotor(Object):
     def Loop(self,dt):
         # it should also depends on angular velocity
 
-        vel=abs(self.Body().velocity + self.Body().angular_velocity*pymunk.Vec2d.rotated(self._origin,self.Body().angle))/self._k
+        vel=(abs(self.Body().velocity) + abs(self.Body().angular_velocity)*abs(self._origin))/self._k
 
-        force=((self._torque-(self._a*vel))*self._direction)*(self._power/100.0)
+        force=((self._torque-(self._a*vel)))*(self._power/100.0)
+        print("Body angle: ",self.Body().angle * 180.0/np.pi)
+
+        force_vec=pymunk.Vec2d(1,0)*self._direction*force
         
-        force_vec=(force*math.cos(self.Body().angle),force*math.sin(self.Body().angle))
+        
+        print(self.Name()," Motor origin: ",str(self._origin.rotated(self.Body().angle)))
+        print(self.Name()," Force vector : ",str(force_vec.rotated(self.Body().angle)))
 
-        self.Body().apply_force_at_local_point(force_vec,pymunk.Vec2d.rotated(self._origin,self.Body().angle))
+        #print(self.Name(),": force_vec: ",str(force_vec))
+        # problem is here:
+        self.Body().apply_force_at_local_point(force_vec,self._origin)
+        print(self.Name()," Force total: ",str(self.Body().force))
+        
       
     def Body(self):
         return self._body

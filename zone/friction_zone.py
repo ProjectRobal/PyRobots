@@ -50,26 +50,12 @@ class FrictionZone(Object):
 
         radius=math.sqrt(area/math.pi)
 
-        friction=mass*10*self._friction
+        friction=mass*self._friction
 
-        anti_torque=friction*radius
-
-        if abs(on_floor.body.force) <= friction:
-            on_floor.body.force=(0,0)
-        if abs(on_floor.body.velocity)>0:
-            if abs(on_floor.body.velocity)-abs(friction*STEP_TIME/mass)<=0:
-                on_floor.body.velocity=(0.0,0.0)
-            else:
-                on_floor.body.force-=friction*on_floor.body.velocity.normalized()
-
-        if abs(on_floor.body.torque)<=anti_torque:
-            on_floor.body.torque=0
-        if abs(on_floor.body.angular_velocity)>0:
-            if abs(on_floor.body.angular_velocity)-abs(anti_torque*STEP_TIME/on_floor.body.moment)<=0:
-                on_floor.body.angular_velocity=0.0
-            else:
-                on_floor.body.torque+=anti_torque*(on_floor.body.angular_velocity/abs(on_floor.body.angular_velocity))
-        
+        on_floor.body.velocity=on_floor.body.velocity*0.95
+       
+        on_floor.body.angular_velocity=0.4*on_floor.body.angular_velocity
+        #on_floor.body.torque=on_floor.body.torque*0.1
         return True
         
 
