@@ -33,7 +33,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
     def __init__(self,scene:Scene,position=(0,0)):
         self._scene = scene
-        self._base = Rect("base",scene.Space(),(58,50),(-29,-25),pymunk.Body(30,100))
+        self._base = Rect("base",scene.Space(),(58,50),(-29,-25),pymunk.Body(30,30))
         self._base.Color((231, 255, 13,255))
         self._base.Shape().filter=pymunk.ShapeFilter(group=1)
 
@@ -63,7 +63,7 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
 
         #self._a_source=MicSource("mic",scene.Space(),self._microphones,1.0)
         #self._a_source=MicSourceStatic("mic",scene.Space(),600,500,self._microphones,0.001)
-        self._a_source=MicSourceNoise("mic",scene.Space(),600,500,self._microphones,0.01)
+        self._a_source=MicSourceNoise("mic",scene.Space(),200,500,self._microphones,0.01)
 
         self._front1.Show(True)
         self._front2.Show(True)
@@ -86,9 +86,11 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
             scene.add_sensor(micro)
             
         self._m1.set_power(0)
-        self._m2.set_power(0)
+        self._m2.set_power(20)
 
         self.setPosition(position)
+
+        self._scene.update(STEP_TIME)
 
     def getPosition(self):
         return self._base.Body().position
@@ -120,8 +122,8 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         
         gyro=Gyroscope()
 
-        gyro.acceleration[:]=np.array(self._gyro.get_accel(),dtype=np.int32)
-        gyro.gyroscope[:]=np.array(self._gyro.get_angular_velocity(),dtype=np.int32)
+        gyro.acceleration[:]=np.array(self._gyro.get_accel(),dtype=np.float32)
+        gyro.gyroscope[:]=np.array(self._gyro.get_rotation(),dtype=np.float32)
         gyro.accel_range=16
         gyro.gyro_range=2000
 
@@ -157,6 +159,10 @@ class Robot(rc_service_pb2_grpc.RCRobotServicer):
         self.UpdateParams(request)
 
         return _None()
+    
+    def ReadData(self, request, context):
+
+        return self.PackageData()
     
     def _run_server(self):
         self.server= grpc.server(futures.ThreadPoolExecutor(max_workers=10))

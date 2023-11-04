@@ -5,6 +5,7 @@ service RCRobot
  
     rpc Process(Command) returns (Message){}
     rpc SendCommand(Command)returns(_None){}
+    rpc ReadData(_None) returns (Message){}
 }
 
 message _None

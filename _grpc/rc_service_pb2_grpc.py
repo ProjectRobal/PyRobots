@@ -24,6 +24,11 @@ class RCRobotStub(object):
                 request_serializer=rc__service__pb2.Command.SerializeToString,
                 response_deserializer=rc__service__pb2._None.FromString,
                 )
+        self.ReadData = channel.unary_unary(
+                '/RCRobot/ReadData',
+                request_serializer=rc__service__pb2._None.SerializeToString,
+                response_deserializer=rc__service__pb2.Message.FromString,
+                )
 
 
 class RCRobotServicer(object):
@@ -41,6 +46,12 @@ class RCRobotServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ReadData(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RCRobotServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -53,6 +64,11 @@ def add_RCRobotServicer_to_server(servicer, server):
                     servicer.SendCommand,
                     request_deserializer=rc__service__pb2.Command.FromString,
                     response_serializer=rc__service__pb2._None.SerializeToString,
+            ),
+            'ReadData': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReadData,
+                    request_deserializer=rc__service__pb2._None.FromString,
+                    response_serializer=rc__service__pb2.Message.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -95,5 +111,22 @@ class RCRobot(object):
         return grpc.experimental.unary_unary(request, target, '/RCRobot/SendCommand',
             rc__service__pb2.Command.SerializeToString,
             rc__service__pb2._None.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def ReadData(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/RCRobot/ReadData',
+            rc__service__pb2._None.SerializeToString,
+            rc__service__pb2.Message.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -40,6 +40,17 @@ class RCRobotServicer(rc_service_pb2_grpc.RCRobotServicer):
         data=self._manager.getParamsList("Distance_Floor")
         floor=DistanceSensor()
 
+        front1=DistanceSensor()
+
+        try:
+                front1=DistanceSensor(distance=data["distance1"])
+        except:
+            self._status=-1
+            self._message+=" No front Sensor"  
+
+        data=self._manager.getParamsList("Distance_Floor")
+        floor=DistanceSensor()
+
         try:
                 floor=DistanceSensor(distance=data["distance"])
         except:
@@ -59,7 +70,7 @@ class RCRobotServicer(rc_service_pb2_grpc.RCRobotServicer):
             self._status=-1
             self._message=" No audio device"
         
-        msg=Message(front=front,floor=floor, left=left, right=right,gyroscope=gyro,status=self._status,message=self._message)
+        msg=Message(front=front,front1=front1,floor=floor, left=left, right=right,gyroscope=gyro,status=self._status,message=self._message)
 
         print(msg)
         return msg
@@ -117,6 +128,10 @@ class RCRobotServicer(rc_service_pb2_grpc.RCRobotServicer):
             self._code=-99
 
         return _None()
+    
+    def ReadData(self, request, context):
+
+        return self.PackageData()
 
 
 

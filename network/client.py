@@ -23,6 +23,9 @@ def process_data(stub:pb2_grpc.RCRobotStub,data):
 
     return process(stub,speedA=data["Motors"]["speedA"],directionA=data["Motors"]["directionA"],speedB=data["Motors"]["speedB"],directionB=data["Motors"]["directionB"],angel1=data["Servos"]["pwm1"],angel2=data["Servos"]["pwm2"])
 
+def read_data(stub:pb2_grpc.RCRobotStub):
+
+    return stub.ReadData(_None)
 
 def get_stub(channel)->pb2_grpc.RCRobotStub:
     return pb2_grpc.RCRobotStub(channel)
