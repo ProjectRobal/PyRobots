@@ -47,7 +47,7 @@ wall_left.Color((0,0,255))
 wall_right=Rect("wall_right",space,(25,800),(775,0),space.static_body)
 wall_right.Color((0,0,0))
 
-f_zone=FrictionZone("floor",space,[(0,0),(800,0),(800,600),(0,600)],0.1,[2])
+f_zone=FrictionZone("floor",space,[(0,0),(800,0),(800,600),(0,600)],0.95,0.4,[2])
 f_zone.Color((250, 209, 95))
 
 hole_pos=(300,400)

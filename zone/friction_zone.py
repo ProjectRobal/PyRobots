@@ -13,7 +13,7 @@ class FrictionZone(Object):
     An area object when proper object interact with it , it 
     adds a friction force opposed to object's movement.
     '''
-    def __init__(self, name, space,coordinates:list[pymunk.Vec2d],friction:float,iteraction_list:list[int],id=1):
+    def __init__(self, name, space,coordinates:list[pymunk.Vec2d],friction:float,damping:float,iteraction_list:list[int],id=1):
         '''
         coordinates - a list of Vec2ds
         friction - a coefficient of friction
@@ -31,6 +31,7 @@ class FrictionZone(Object):
 
         self._color=(0,0,0)
         self._friction=friction
+        self._damping=damping
 
         self.pos=utils.get_anchor_static(self.shape)
 
@@ -42,20 +43,11 @@ class FrictionZone(Object):
 
     def _pre_solve(self,arbiter:pymunk.Arbiter,space,data):
         on_floor:pymunk.Shape=arbiter.shapes[1]
-        
-        velocity:pymunk.Vec2d=on_floor.body.velocity
 
-        mass=on_floor.body.mass
-        area=on_floor.area
-
-        radius=math.sqrt(area/math.pi)
-
-        friction=mass*self._friction
-
-        on_floor.body.velocity=on_floor.body.velocity*0.95
+        on_floor.body.velocity=on_floor.body.velocity*self._friction
        
-        on_floor.body.angular_velocity=0.4*on_floor.body.angular_velocity
-        #on_floor.body.torque=on_floor.body.torque*0.1
+        on_floor.body.angular_velocity=self._damping*on_floor.body.angular_velocity
+
         return True
         
 
